@@ -35,8 +35,10 @@ Vector3 Object::get_color(Vertex3 pos, Vector3 normal, Vector3 dir,
 		}
 	}
 	if (info.valid) {
-		light_sum = light_sum * (1 - (mat.Ns / 1000)) +
-			info.color * (mat.Ns / 1000);
+		light_sum = (light_sum * (1 - (mat.Ns / 1000))) +
+			(info.color * (mat.Ns / 1000));
+	} else {
+		light_sum = light_sum * (1 - (mat.Ns / 1000));
 	}
 	light_sum = Vector3(
 		min(light_sum.X(), 1.0),
