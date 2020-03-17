@@ -5,6 +5,7 @@
 #include <vector>
 #include "base_classes.h"
 #include "light.h"
+#include "texture.h"
 
 class Object {
 public:
@@ -29,6 +30,13 @@ public:
 			d = D;
 		}
 	};
+
+	Texture *texture;
+
+	Object()
+	{
+		texture = 0;
+	}
 
 	virtual intersect intersect_ray(std::vector<Object*> &objects,
 		std::vector<Light> &lights, Vertex3 origin, Vector3 dir,
