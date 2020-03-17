@@ -89,9 +89,9 @@ int main(int argc, const char **argv)
 
 
 	Endless_plane back;
-	back.vertices[0] = Vertex3(1000, 2000, 900);
-	back.vertices[1] = Vertex3(1000, -2000, 900);
-	back.vertices[2] = Vertex3(-500, 0, 900);
+	back.vertices[0] = Vertex3(1000, 2000, 1200);
+	back.vertices[1] = Vertex3(1000, -2000, 1200);
+	back.vertices[2] = Vertex3(-500, 0, 1200);
 	back.normals[0] = Vector3(0, 0, -1);
 	back.normals[1] = Vector3(0, 0, -1);
 	back.normals[2] = Vector3(0, 0, -1);
@@ -102,6 +102,7 @@ int main(int argc, const char **argv)
 	lights.push_back(Light(Vertex3(100, 500, 0), 500000));
 	lights.push_back(Light(Vertex3(100, -500, 200), 100000));
 	lights.push_back(Light(Vertex3(0, -400, 400), 20000));
+	lights.push_back(Light(Vertex3(100, 200, 900), 100000));
 
 	objects.push_back(&sp_bl);
 	objects.push_back(&plane);
@@ -116,8 +117,8 @@ int main(int argc, const char **argv)
 	cam.psi = 0;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 1400;
-	uint32_t height = 1400;
+	uint32_t width = 20000;
+	uint32_t height = 20000;
 
 	std::cout << "Rendering.\n";
 
@@ -125,6 +126,12 @@ int main(int argc, const char **argv)
 
 	#pragma omp parallel for private(color) shared(image, width, height) schedule(dynamic)
 	for (uint32_t i = 0; i < width; ++i) {
+		if (i % 100 == 0) {
+			#pragma omp critical
+			{
+				std::cout << i << std::endl;
+			}
+		}
 		for (uint32_t j = 0; j < height; ++j) {
 			Vector3 dir = cam.getDir(i, j, width, height);
 
