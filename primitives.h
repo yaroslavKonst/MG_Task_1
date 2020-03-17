@@ -7,6 +7,7 @@
 #include <math.h>
 #include "object.h"
 #include "base_classes.h"
+#include "texture.h"
 
 class Triangle: public Object {
 public:

@@ -13,6 +13,7 @@
 #include "light.h"
 #include "primitives.h"
 #include "rgb.h"
+#include "texture.h"
 
 const uint32_t RED   = 0x000000FF;
 const uint32_t GREEN = 0x0000FF00;
@@ -81,6 +82,11 @@ int main(int argc, const char **argv)
 	plain.Kd = Vector3(0.7, 0.7, 0.7);
 	plain.Ks = Vector3(0, 0, 0);
 	plain.Ns = 100;
+	plain.texture = new TexChBoard;
+	plain.textures[0] = Vector3(-500, 500, 0);
+	plain.textures[1] = Vector3(500, 500, 0);
+	plain.textures[2] = Vector3(0, 0, 0);
+
 
 	Endless_plane back;
 	back.vertices[0] = Vertex3(1000, 2000, 900);
@@ -110,8 +116,8 @@ int main(int argc, const char **argv)
 	cam.psi = 0;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 14000;
-	uint32_t height = 14000;
+	uint32_t width = 1400;
+	uint32_t height = 1400;
 
 	std::cout << "Rendering.\n";
 

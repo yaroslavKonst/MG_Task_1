@@ -159,8 +159,14 @@ Object::intersect Endless_plane::intersect_ray(std::vector<Object*> &objects,
 				normals[2] * (1 - u - v)).normalize();
 			Vector3 light_sum;
 			if (!shadow) {
-				res.color = get_color(res.pos, res.normal, dir, objects, lights,
-					material(Kd, Ks, Ns, d));
+				if (!texture) {
+					res.color = get_color(res.pos, res.normal, dir, objects,
+						lights, material(Kd, Ks, Ns, d));
+				} else {
+					res.color = get_color(res.pos, res.normal, dir, objects,
+						lights, material(texture->get_color(textures[0] * u +
+						textures[1] * v + textures[2] * (1-u-v)), Ks, Ns, d));
+				}
 			}
 		} else {
 			res.valid = false;
