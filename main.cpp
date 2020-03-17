@@ -110,8 +110,8 @@ int main(int argc, const char **argv)
 	cam.psi = 0;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 1400;
-	uint32_t height = 1400;
+	uint32_t width = 14000;
+	uint32_t height = 14000;
 
 	std::cout << "Rendering.\n";
 
