@@ -61,7 +61,7 @@ int main(int argc, const char **argv)
 	Sphere sp_bl(Vertex3(-20, 0, 300), 50, Vector3(0, 0, 0.9), Vector3(),
 		300, 1);
 
-	Mesh plane("objects/planeAssembly.obj", 140, 220, 600, 3*M_PI/4, 0,
+	Mesh plane("objects/planeAssembly.obj", 140, 200, 800, 3*M_PI/4, 0,
 		-M_PI / 2);
 
 /*	Mesh sp("objects/sphere.obj", 100, -100, 700, 0, 0, 0); */
@@ -109,16 +109,16 @@ int main(int argc, const char **argv)
 	objects.push_back(&sp);
 	objects.push_back(&sp_gr);
 	objects.push_back(&plain);
-	objects.push_back(&back);
+//	objects.push_back(&back);
 
 	Camera cam;
-	cam.position = Vertex3(0, 0, 0);
+	cam.position = Vertex3(100, 0, 0);
 	cam.phi = 0;
 	cam.psi = 0;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 20000;
-	uint32_t height = 20000;
+	uint32_t width = 26000;
+	uint32_t height = 26000;
 
 	std::cout << "Rendering.\n";
 
@@ -159,6 +159,8 @@ int main(int argc, const char **argv)
 			}
 		}
 	}
+
+	std::cout << "Saving image to " << outFilePath << "." << std::endl;
 
 	SaveBMP(outFilePath.c_str(), image.data(), width, height);
 
