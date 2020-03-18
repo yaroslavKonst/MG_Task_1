@@ -48,29 +48,20 @@ int main(int argc, const char **argv)
 		sceneId = atoi(cmdLineParams["-scene"].c_str());
 
 	uint32_t color = 0;
-	if (sceneId == 1)
-		color = RED;
-	else if (sceneId == 2)
-		color = RED | GREEN;
-	else if (sceneId == 3)
-		color = BLUE;
 
 	std::cout << "Loading models.\n";
 
-/*	Mesh sp_bl("objects/sphere_blue.obj", -20, 0, 300, 0, 0, 0); */
 	Sphere sp_bl(Vertex3(-20, 0, 300), 50, Vector3(0, 0, 0.9), Vector3(),
 		300, 1);
 
 	Mesh plane("objects/planeAssembly.obj", 140, 200, 800, 3*M_PI/4, 0,
 		-M_PI / 2);
 
-/*	Mesh sp("objects/sphere.obj", 100, -100, 700, 0, 0, 0); */
-	Sphere sp(Vertex3(100, -100, 700), 50, Vector3(0.7, 0.7, 0.7), Vector3(),
-		800, 1);
+	Sphere sp(Vertex3(100, -100, 700), 50, Vector3(0.7, 0.7, 0.7),
+		Vector3(), 800, 1);
 
-/*	Mesh sp_gr("objects/sphere_green.obj", 200, -150, 600, 0, 0, 0); */
-	Sphere sp_gr(Vertex3(200, -150, 600), 50, Vector3(0, 0.9, 0), Vector3(),
-		300, 1);
+	Sphere sp_gr(Vertex3(200, -150, 600), 50, Vector3(0, 0.9, 0),
+		Vector3(), 300, 1);
 
 	Endless_plane plain;
 	plain.vertices[0] = Vertex3(-50, -500, 500);
@@ -87,18 +78,6 @@ int main(int argc, const char **argv)
 	plain.textures[1] = Vector3(500, 500, 0);
 	plain.textures[2] = Vector3(0, 0, 0);
 
-
-	Endless_plane back;
-	back.vertices[0] = Vertex3(1000, 2000, 1200);
-	back.vertices[1] = Vertex3(1000, -2000, 1200);
-	back.vertices[2] = Vertex3(-500, 0, 1200);
-	back.normals[0] = Vector3(0, 0, -1);
-	back.normals[1] = Vector3(0, 0, -1);
-	back.normals[2] = Vector3(0, 0, -1);
-	back.Kd = Vector3(0.7, 0.7, 0.7);
-	back.Ks = Vector3(0, 0, 0);
-	back.Ns = 100;
-
 	lights.push_back(Light(Vertex3(100, 500, 0), 500000));
 	lights.push_back(Light(Vertex3(100, -500, 200), 100000));
 	lights.push_back(Light(Vertex3(0, -400, 400), 20000));
@@ -109,7 +88,6 @@ int main(int argc, const char **argv)
 	objects.push_back(&sp);
 	objects.push_back(&sp_gr);
 	objects.push_back(&plain);
-//	objects.push_back(&back);
 
 	Camera cam;
 	cam.position = Vertex3(100, 0, 0);
