@@ -51,17 +51,23 @@ int main(int argc, const char **argv)
 
 	std::cout << "Loading models.\n";
 
-	Sphere sp_bl(Vertex3(-20, 0, 300), 50, Vector3(0, 0, 0.9), Vector3(),
-		300, 1, 300);
+	Sphere sp_bl(Vertex3(-20, 0, 300), 50, Vector3(0, 0, 0.9),
+		Vector3(1, 1, 1), 300, 1, 140);
 
-	Mesh plane("objects/planeAssembly.obj", 140, 200, 800, 3*M_PI/4, 0,
+	Sphere sp_bl1(Vertex3(-40, 80, 350), 20, Vector3(0, 0.9, 0),
+		Vector3(1, 1, 1), 500, 1, 140);
+
+	Mesh plane("objects/planeAssembly.obj", 140, 100, 400, 3*M_PI/4, -M_PI/4,
 		-M_PI / 2);
 
 	Sphere sp(Vertex3(100, -100, 700), 50, Vector3(0.7, 0.7, 0.7),
-		Vector3(), 800, 1, 300);
+		Vector3(1, 1, 1), 800, 1, 140);
+
+	Sphere sp1(Vertex3(200, 0, 800), 30, Vector3(0.8, 0, 0),
+		Vector3(1, 1, 1), 200, 1, 140);
 
 	Sphere sp_gr(Vertex3(200, -150, 600), 50, Vector3(0, 0.9, 0),
-		Vector3(0.1, 0.1, 0.1), 300, 1, 3);
+		Vector3(1, 1, 1), 300, 1, 140);
 
 	Endless_plane plain;
 	plain.vertices[0] = Vertex3(-50, -500, 500);
@@ -70,10 +76,10 @@ int main(int argc, const char **argv)
 	plain.normals[0] = Vector3(1, 0, 0);
 	plain.normals[1] = Vector3(1, 0, 0);
 	plain.normals[2] = Vector3(1, 0, 0);
-	plain.mat.Kd = Vector3(0.7, 0.7, 0.7);
-	plain.mat.Ks = Vector3(0, 0, 0);
+	plain.mat.Kd = Vector3();
+	plain.mat.Ks = Vector3();
 	plain.mat.Ns = 100;
-	plain.mat.alpha = 3;
+	plain.mat.alpha = 1400;
 	plain.texture = new TexChBoard;
 	plain.textures[0] = Vector3(-500, 500, 0);
 	plain.textures[1] = Vector3(500, 500, 0);
@@ -86,19 +92,21 @@ int main(int argc, const char **argv)
 	lights.push_back(Light(Vertex3(100, -400, 900), 100000));
 
 	objects.push_back(&sp_bl);
+	objects.push_back(&sp_bl1);
 	objects.push_back(&plane);
 	objects.push_back(&sp);
+	objects.push_back(&sp1);
 	objects.push_back(&sp_gr);
 	objects.push_back(&plain);
 
 	Camera cam;
 	cam.position = Vertex3(100, 0, 0);
-	cam.phi = 0;
+	cam.phi = -M_PI / 16;
 	cam.psi = 0;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 1000;
-	uint32_t height = 1000;
+	uint32_t width = 20000;
+	uint32_t height = 20000;
 
 	std::cout << "Rendering.\n";
 
@@ -140,6 +148,21 @@ int main(int argc, const char **argv)
 		}
 	}
 
+/*	// Sampling
+	std::cout << "Sampling.\n";
+	std::vector<uint32_t> image_fin(width * height);
+
+	for (uint32_t i = 1; i < width - 1; ++i) {
+		for (uint32_t j = 1; j < height - 1; ++j) {
+			image_fin[i*height + j] = to_RGB(
+				(from_RGB(image[i*height + j]) +
+				from_RGB(image[i*height + j + 1]) +
+				from_RGB(image[i*height + j - 1]) +
+				from_RGB(image[(i + 1)*height + j]) +
+				from_RGB(image[(i - 1)*height + j])) * (1.0 / 5.0));
+		}
+	}
+*/
 	std::cout << "Saving image to " << outFilePath << "." << std::endl;
 
 	SaveBMP(outFilePath.c_str(), image.data(), width, height);

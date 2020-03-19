@@ -21,7 +21,7 @@ inline Vector3 get_Phong_light(Vector3 Kd, Vector3 Ks, double Ns, double alpha,
 	Vector3 sum =
 		(Kd * light_n.dot(normal) * intensity) +
 		(Ks * pow(mirror(light_n, normal).dot((dir*(-1)).normalize()), alpha) *
-		intensity * 10);
+		intensity);
 	return sum;
 }
 
