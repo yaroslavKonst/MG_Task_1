@@ -4,40 +4,6 @@
 
 #include <math.h>
 
-template<class T>
-T max(T a, T b)
-{
-	return a > b ? a : b;
-}
-
-template<class T>
-T min(T a, T b)
-{
-	return a < b ? a : b;
-}
-
-template<class T>
-T module(T a)
-{
-	return a >= 0 ? a : -a;
-}
-
-template<class T>
-bool solve_quad(T a, T b, T c, T &r1, T &r2)
-{
-	T D = b * b - a * c * 4;
-	if (D > 0) {
-		r1 = (-b - sqrt(D)) / (2 * a);
-		r2 = (-b + sqrt(D)) / (2 * a);
-		return true;
-	} else if (D == 0) {
-		r1 = r2 = -b / (2 * a);
-		return true;
-	} else {
-		return false;
-	}
-}
-
 class Vector3;
 
 class Vertex3 {
@@ -81,25 +47,6 @@ private:
 	double y;
 	double z;
 };
-
-inline Vector3 mirror(Vector3 obj, Vector3 base)
-{
-	Vector3 base_norm = base.normalize();
-	Vector3 obj_norm = obj.normalize();
-	double ang_cos = (base_norm).dot(obj_norm);
-	Vector3 delta = (base_norm * ang_cos) - obj_norm;
-	return ((base_norm * ang_cos) + delta) * obj.length();
-}
-
-inline Vector3 get_Phong_light(Vector3 Kd, Vector3 Ks, double Ns, double alpha,
-	Vector3 normal, Vector3 dir, Vector3 light, double intensity)
-{
-	Vector3 light_n = light.normalize();
-	Vector3 sum = (Kd * (light_n.dot(normal)) * intensity) +
-		(Ks * pow(mirror(light_n, normal).dot((dir*(-1)).normalize()),
-		alpha) * intensity);
-	return sum;
-}
 
 inline Vertex3::Vertex3(const Vertex3 &vertex) {
 	x = vertex.x;

@@ -4,6 +4,8 @@
 
 #include <vector>
 #include "base_classes.h"
+#include "base_functions.h"
+#include "vector_functions.h"
 #include "light.h"
 #include "texture.h"
 

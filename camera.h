@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include "base_classes.h"
+#include "base_functions.h"
 
 class Camera {
 public:

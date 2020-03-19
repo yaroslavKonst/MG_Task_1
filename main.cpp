@@ -61,7 +61,7 @@ int main(int argc, const char **argv)
 		Vector3(), 800, 1, 300);
 
 	Sphere sp_gr(Vertex3(200, -150, 600), 50, Vector3(0, 0.9, 0),
-		Vector3(0.5, 0.5, 0.5), 300, 1, 3);
+		Vector3(0.1, 0.1, 0.1), 300, 1, 3);
 
 	Endless_plane plain;
 	plain.vertices[0] = Vertex3(-50, -500, 500);
@@ -71,7 +71,7 @@ int main(int argc, const char **argv)
 	plain.normals[1] = Vector3(1, 0, 0);
 	plain.normals[2] = Vector3(1, 0, 0);
 	plain.mat.Kd = Vector3(0.7, 0.7, 0.7);
-	plain.mat.Ks = Vector3(0.5, 0.5, 0.5);
+	plain.mat.Ks = Vector3(0, 0, 0);
 	plain.mat.Ns = 100;
 	plain.mat.alpha = 3;
 	plain.texture = new TexChBoard;
@@ -97,8 +97,8 @@ int main(int argc, const char **argv)
 	cam.psi = 0;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 2000;
-	uint32_t height = 2000;
+	uint32_t width = 1000;
+	uint32_t height = 1000;
 
 	std::cout << "Rendering.\n";
 

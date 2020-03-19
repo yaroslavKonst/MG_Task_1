@@ -7,6 +7,7 @@
 #include <iostream>
 #include "object.h"
 #include "base_classes.h"
+#include "base_functions.h"
 #include "loader.h"
 #include "light.h"
 
