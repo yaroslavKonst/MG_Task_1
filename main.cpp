@@ -70,9 +70,9 @@ int main(int argc, const char **argv)
 	plain.normals[0] = Vector3(1, 0, 0);
 	plain.normals[1] = Vector3(1, 0, 0);
 	plain.normals[2] = Vector3(1, 0, 0);
-	plain.Kd = Vector3(0.7, 0.7, 0.7);
-	plain.Ks = Vector3(0, 0, 0);
-	plain.Ns = 100;
+	plain.mat.Kd = Vector3(0.7, 0.7, 0.7);
+	plain.mat.Ks = Vector3(0, 0, 0);
+	plain.mat.Ns = 100;
 	plain.texture = new TexChBoard;
 	plain.textures[0] = Vector3(-500, 500, 0);
 	plain.textures[1] = Vector3(500, 500, 0);
@@ -84,7 +84,7 @@ int main(int argc, const char **argv)
 	lights.push_back(Light(Vertex3(100, 200, 900), 100000));
 
 	objects.push_back(&sp_bl);
-	objects.push_back(&plane);
+//	objects.push_back(&plane);
 	objects.push_back(&sp);
 	objects.push_back(&sp_gr);
 	objects.push_back(&plain);
@@ -95,8 +95,8 @@ int main(int argc, const char **argv)
 	cam.psi = 0;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 20000;
-	uint32_t height = 20000;
+	uint32_t width = 512;
+	uint32_t height = 512;
 
 	std::cout << "Rendering.\n";
 

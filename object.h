@@ -22,7 +22,8 @@ public:
 		Vector3 Ks;
 		double Ns;
 		double d;
-		material(Vector3 kd, Vector3 ks, double ns, double D)
+		material(Vector3 kd = Vector3(), Vector3 ks = Vector3(),
+			double ns = 0, double D = 0)
 		{
 			Kd = kd;
 			Ks = ks;

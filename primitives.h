@@ -18,10 +18,7 @@ public:
 	Vector3 normals[3];
 	Vector3 textures[3];
 
-	Vector3 Kd;
-	Vector3 Ks;
-	double Ns;
-	double d;
+	material mat;
 };
 
 class Sphere: public Object {
@@ -32,19 +29,16 @@ public:
 	Vertex3 pos;
 	double R;
 
-	Vector3 Kd;
-	Vector3 Ks;
-	double Ns;
-	double d;
+	material mat;
 
 	Sphere(Vertex3 p, double r, Vector3 kd, Vector3 ks, double ns, double D)
 	{
 		pos = p;
 		R = r;
-		Kd = kd;
-		Ks = ks;
-		Ns = ns;
-		d = D;
+		mat.Kd = kd;
+		mat.Ks = ks;
+		mat.Ns = ns;
+		mat.d = D;
 	}
 };
 
