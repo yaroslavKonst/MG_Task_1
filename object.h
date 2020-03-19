@@ -22,13 +22,15 @@ public:
 		Vector3 Ks;
 		double Ns;
 		double d;
+		double alpha;
 		material(Vector3 kd = Vector3(), Vector3 ks = Vector3(),
-			double ns = 0, double D = 0)
+			double ns = 0, double D = 0, double a = 20)
 		{
 			Kd = kd;
 			Ks = ks;
 			Ns = ns;
 			d = D;
+			alpha = a;
 		}
 	};
 

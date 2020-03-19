@@ -31,7 +31,8 @@ public:
 
 	material mat;
 
-	Sphere(Vertex3 p, double r, Vector3 kd, Vector3 ks, double ns, double D)
+	Sphere(Vertex3 p, double r, Vector3 kd, Vector3 ks, double ns,
+		double D, double a)
 	{
 		pos = p;
 		R = r;
@@ -39,6 +40,7 @@ public:
 		mat.Ks = ks;
 		mat.Ns = ns;
 		mat.d = D;
+		mat.alpha = a;
 	}
 };
 

@@ -91,12 +91,13 @@ inline Vector3 mirror(Vector3 obj, Vector3 base)
 	return ((base_norm * ang_cos) + delta) * obj.length();
 }
 
-inline Vector3 get_light(Vector3 Kd, Vector3 Ks, double Ns, Vector3 normal,
-	Vector3 dir, Vector3 light, double intensity)
+inline Vector3 get_Phong_light(Vector3 Kd, Vector3 Ks, double Ns, double alpha,
+	Vector3 normal, Vector3 dir, Vector3 light, double intensity)
 {
-	Vector3 sum = (Kd * (light.normalize().dot(normal)) * intensity) +
-		(Ks * pow(mirror(light.normalize(), normal).dot((dir*(-1)).normalize()),
-		Ns) * intensity);
+	Vector3 light_n = light.normalize();
+	Vector3 sum = (Kd * (light_n.dot(normal)) * intensity) +
+		(Ks * pow(mirror(light_n, normal).dot((dir*(-1)).normalize()),
+		alpha) * intensity);
 	return sum;
 }
 

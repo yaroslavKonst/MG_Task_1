@@ -18,8 +18,8 @@ Vector3 Object::get_color(Vertex3 pos, Vector3 normal, Vector3 dir,
 				}
 			}
 			if (f) {
-				light_sum += get_light(mat.Kd, mat.Ks, mat.Ns, normal, dir,
-					lt, lights[l].intensity / pow(lt.length(), 2));
+				light_sum += get_Phong_light(mat.Kd, mat.Ks, mat.Ns, mat.alpha,
+					normal, dir, lt, lights[l].intensity / pow(lt.length(), 2));
 			}
 		}
 	}
@@ -27,11 +27,13 @@ Vector3 Object::get_color(Vertex3 pos, Vector3 normal, Vector3 dir,
 	intersect info;
 	info.valid = false;
 	info.t = 0;
-	for (unsigned int i = 0; i < objects.size(); ++i) {
-		intersect info1 = objects[i]->intersect_ray(objects, lights, start,
-			ref_dir, false);
-		if (!info.valid || (info1.valid && info1.t < info.t)) {
-			info = info1;
+	if (mat.Ns > 0) {
+		for (unsigned int i = 0; i < objects.size(); ++i) {
+			intersect info1 = objects[i]->intersect_ray(objects, lights, start,
+				ref_dir, false);
+			if (!info.valid || (info1.valid && info1.t < info.t)) {
+				info = info1;
+			}
 		}
 	}
 	if (info.valid) {

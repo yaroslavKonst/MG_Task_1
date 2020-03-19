@@ -166,7 +166,7 @@ Object::intersect Endless_plane::intersect_ray(std::vector<Object*> &objects,
 					res.color = get_color(res.pos, res.normal, dir, objects,
 						lights, material(texture->get_color(textures[0] * u +
 						textures[1] * v + textures[2] * (1-u-v)), mat.Ks,
-						mat.Ns, mat.d));
+						mat.Ns, mat.d, mat.alpha));
 				}
 			}
 		} else {

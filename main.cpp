@@ -52,16 +52,16 @@ int main(int argc, const char **argv)
 	std::cout << "Loading models.\n";
 
 	Sphere sp_bl(Vertex3(-20, 0, 300), 50, Vector3(0, 0, 0.9), Vector3(),
-		300, 1);
+		300, 1, 300);
 
 	Mesh plane("objects/planeAssembly.obj", 140, 200, 800, 3*M_PI/4, 0,
 		-M_PI / 2);
 
 	Sphere sp(Vertex3(100, -100, 700), 50, Vector3(0.7, 0.7, 0.7),
-		Vector3(), 800, 1);
+		Vector3(), 800, 1, 300);
 
 	Sphere sp_gr(Vertex3(200, -150, 600), 50, Vector3(0, 0.9, 0),
-		Vector3(), 300, 1);
+		Vector3(0.5, 0.5, 0.5), 300, 1, 3);
 
 	Endless_plane plain;
 	plain.vertices[0] = Vertex3(-50, -500, 500);
@@ -71,8 +71,9 @@ int main(int argc, const char **argv)
 	plain.normals[1] = Vector3(1, 0, 0);
 	plain.normals[2] = Vector3(1, 0, 0);
 	plain.mat.Kd = Vector3(0.7, 0.7, 0.7);
-	plain.mat.Ks = Vector3(0, 0, 0);
+	plain.mat.Ks = Vector3(0.5, 0.5, 0.5);
 	plain.mat.Ns = 100;
+	plain.mat.alpha = 3;
 	plain.texture = new TexChBoard;
 	plain.textures[0] = Vector3(-500, 500, 0);
 	plain.textures[1] = Vector3(500, 500, 0);
@@ -82,9 +83,10 @@ int main(int argc, const char **argv)
 	lights.push_back(Light(Vertex3(100, -500, 200), 100000));
 	lights.push_back(Light(Vertex3(0, -400, 400), 20000));
 	lights.push_back(Light(Vertex3(100, 200, 900), 100000));
+	lights.push_back(Light(Vertex3(100, -400, 900), 100000));
 
 	objects.push_back(&sp_bl);
-//	objects.push_back(&plane);
+	objects.push_back(&plane);
 	objects.push_back(&sp);
 	objects.push_back(&sp_gr);
 	objects.push_back(&plain);
@@ -95,8 +97,8 @@ int main(int argc, const char **argv)
 	cam.psi = 0;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 512;
-	uint32_t height = 512;
+	uint32_t width = 2000;
+	uint32_t height = 2000;
 
 	std::cout << "Rendering.\n";
 
