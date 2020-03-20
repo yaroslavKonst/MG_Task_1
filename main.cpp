@@ -51,6 +51,7 @@ int main(int argc, const char **argv)
 
 	std::cout << "Loading models.\n";
 
+// SCENE 0
 	Sphere sp_bl(Vertex3(0, -20, 300), 50, Vector3(0, 0, 0.4),
 		Vector3(0.5, 0.5, 0.5), 300, 1, 40);
 
@@ -85,28 +86,115 @@ int main(int argc, const char **argv)
 	plain.textures[1] = Vector3(500, 500, 0);
 	plain.textures[2] = Vector3(0, 0, 0);
 
-	lights.push_back(Light(Vertex3(-500, 100, 0), 500000));
-	lights.push_back(Light(Vertex3(500, 100, 200), 100000));
-	lights.push_back(Light(Vertex3(400, 0, 400), 20000));
-	lights.push_back(Light(Vertex3(-200, 100, 900), 100000));
-	lights.push_back(Light(Vertex3(400, 100, 900), 100000));
+// SCENE 1
+	Endless_plane back;
+	back.vertices[0] = Vertex3(0, 0, -100);
+	back.vertices[1] = Vertex3(-100, 100, -100);
+	back.vertices[2] = Vertex3(100, 100, -100);
+	back.normals[0] = Vector3(0, 0, 1);
+	back.normals[1] = Vector3(0, 0, 1);
+	back.normals[2] = Vector3(0, 0, 1);
+	back.mat.Kd = Vector3(0, 0, 0);
+	back.mat.Ks = Vector3();
+	back.mat.Ns = 0;
 
-	objects.push_back(&sp_bl);
-	objects.push_back(&sp_bl1);
-	objects.push_back(&plane);
-	objects.push_back(&sp);
-	objects.push_back(&sp1);
-	objects.push_back(&sp_gr);
-	objects.push_back(&plain);
+	Endless_plane floor;
+	floor.vertices[0] = Vertex3(0, -100, 0);
+	floor.vertices[1] = Vertex3(-100, -100, 100);
+	floor.vertices[2] = Vertex3(100, -100, 100);
+	floor.normals[0] = Vector3(0, 1, 0);
+	floor.normals[1] = Vector3(0, 1, 0);
+	floor.normals[2] = Vector3(0, 1, 0);
+	floor.mat.Kd = Vector3(0.7, 0.7, 0.7);
+	floor.mat.Ks = Vector3();
+	floor.mat.Ns = 0;
 
+	Endless_plane left;
+	left.vertices[0] = Vertex3(100, 0, 0);
+	left.vertices[1] = Vertex3(100, 100, 100);
+	left.vertices[2] = Vertex3(100, 100, -100);
+	left.normals[0] = Vector3(-1, 0, 0);
+	left.normals[1] = Vector3(-1, 0, 0);
+	left.normals[2] = Vector3(-1, 0, 0);
+	left.mat.Kd = Vector3(0, 0.7, 0);
+	left.mat.Ks = Vector3();
+	left.mat.Ns = 0;
+
+	Endless_plane right;
+	right.vertices[0] = Vertex3(-100, 0, 0);
+	right.vertices[1] = Vertex3(-100, 100, 100);
+	right.vertices[2] = Vertex3(-100, 100, -100);
+	right.normals[0] = Vector3(1, 0, 0);
+	right.normals[1] = Vector3(1, 0, 0);
+	right.normals[2] = Vector3(1, 0, 0);
+	right.mat.Kd = Vector3(0.7, 0, 0);
+	right.mat.Ks = Vector3();
+	right.mat.Ns = 0;
+
+	Endless_plane up;
+	up.vertices[0] = Vertex3(0, 100, 0);
+	up.vertices[1] = Vertex3(-100, 100, 100);
+	up.vertices[2] = Vertex3(100, 100, 100);
+	up.normals[0] = Vector3(0, -1, 0);
+	up.normals[1] = Vector3(0, -1, 0);
+	up.normals[2] = Vector3(0, -1, 0);
+	up.mat.Kd = Vector3(0.7, 0.7, 0.7);
+	up.mat.Ks = Vector3();
+	up.mat.Ns = 0;
+
+	Endless_plane front;
+	front.vertices[0] = Vertex3(0, 0, 300);
+	front.vertices[1] = Vertex3(-100, 100, 300);
+	front.vertices[2] = Vertex3(100, 100, 300);
+	front.normals[0] = Vector3(0, 0, -1);
+	front.normals[1] = Vector3(0, 0, -1);
+	front.normals[2] = Vector3(0, 0, -1);
+	front.mat.Kd = Vector3(0.7, 0.7, 0.7);
+	front.mat.Ks = Vector3();
+	front.mat.Ns = 0;
+
+	Sphere sp3(Vertex3(60, -60, 260), 40, Vector3(0.7, 0.7, 0.7),
+		Vector3(0.2, 0.2, 0.2), 800, 1, 40);
+
+// CAMERA
 	Camera cam;
-	cam.position = Vertex3(0, 100, 0);
-	cam.phi = 0;
-	cam.psi = M_PI / 16;
-	cam.fov = M_PI / 2;
 
-	uint32_t width = 512;
-	uint32_t height = 512;
+	if (sceneId == 0) {
+		objects.push_back(&sp_bl);
+		objects.push_back(&sp_bl1);
+		objects.push_back(&plane);
+		objects.push_back(&sp);
+		objects.push_back(&sp1);
+		objects.push_back(&sp_gr);
+		objects.push_back(&plain);
+		lights.push_back(Light(Vertex3(-500, 100, 0), 500000));
+		lights.push_back(Light(Vertex3(500, 100, 200), 100000));
+		lights.push_back(Light(Vertex3(400, 0, 400), 20000));
+		lights.push_back(Light(Vertex3(-200, 100, 900), 100000));
+		lights.push_back(Light(Vertex3(400, 100, 900), 100000));
+
+		cam.position = Vertex3(0, 100, 0);
+		cam.phi = 0;
+		cam.psi = M_PI / 16;
+		cam.fov = M_PI / 2;
+	} else if (sceneId == 1) {
+		objects.push_back(&front);
+		objects.push_back(&back);
+		objects.push_back(&floor);
+		objects.push_back(&up);
+		objects.push_back(&left);
+		objects.push_back(&right);
+		objects.push_back(&sp3);
+		lights.push_back(Light(Vertex3(0, 80, 100), 40000));
+
+		cam.position = Vertex3(0, 0, -80);
+		cam.phi = 0;
+		cam.psi = 0;
+		cam.fov = M_PI / 2;
+	}
+
+	uint32_t width = 4000;
+	uint32_t height = 4000;
 
 	std::cout << "Rendering.\n";
 
