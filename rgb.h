@@ -14,11 +14,10 @@ inline uint32_t to_RGB(Vector3 color)
 
 inline Vector3 from_RGB(uint32_t color)
 {
-	Vector3 ret(
+	return Vector3(
 		((double)(color & 0xFF)) / 255,
 		((double)((color >> 8) & 0xFF)) / 255,
 		((double)((color >> 16) & 0xFF)) / 255);
-	return ret;
 }
 
 #endif

@@ -7,7 +7,7 @@ Vector3 Object::get_color(Vertex3 pos, Vector3 normal, Vector3 dir,
 	Vertex3 start = pos + normal * 0.001;
 	for (unsigned int l = 0; l < lights.size(); ++l) {
 		Vector3 lt = lights[l].pos - start;
-		if (normal.dot(lt) > 0) {
+		if (normal.dot(lt) > 0 && mat.Ns < 1000) {
 			bool f = true;
 			for (unsigned int obj = 0; obj < objects.size(); ++obj) {
 				intersect info = objects[obj]->intersect_ray(objects, lights,

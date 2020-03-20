@@ -51,23 +51,23 @@ int main(int argc, const char **argv)
 
 	std::cout << "Loading models.\n";
 
-	Sphere sp_bl(Vertex3(0, -20, 300), 50, Vector3(0, 0, 0.9),
-		Vector3(1, 1, 1), 300, 1, 140);
+	Sphere sp_bl(Vertex3(0, -20, 300), 50, Vector3(0, 0, 0.4),
+		Vector3(0.5, 0.5, 0.5), 300, 1, 40);
 
 	Sphere sp_bl1(Vertex3(-80, -40, 350), 20, Vector3(0, 0.9, 0),
-		Vector3(1, 1, 1), 500, 1, 140);
+		Vector3(0.1, 0.1, 0.1), 500, 1, 40);
 
 	Mesh plane("objects/planeAssembly.obj", -100, 140, 400, M_PI, M_PI / 8,
 		-M_PI / 10);
 
 	Sphere sp(Vertex3(100, 100, 700), 50, Vector3(0.7, 0.7, 0.7),
-		Vector3(1, 1, 1), 800, 1, 140);
+		Vector3(0.2, 0.2, 0.2), 800, 1, 40);
 
 	Sphere sp1(Vertex3(0, 50, 800), 30, Vector3(0.8, 0, 0),
-		Vector3(1, 1, 1), 200, 1, 140);
+		Vector3(0.1, 0.1, 0.1), 200, 1, 40);
 
 	Sphere sp_gr(Vertex3(150, 200, 600), 50, Vector3(0, 0.9, 0),
-		Vector3(1, 1, 1), 300, 1, 140);
+		Vector3(0.1, 0.1, 0.1), 300, 1, 40);
 
 	Endless_plane plain;
 	plain.vertices[0] = Vertex3(-500, -50, 500);
@@ -105,8 +105,8 @@ int main(int argc, const char **argv)
 	cam.psi = M_PI / 16;
 	cam.fov = M_PI / 2;
 
-	uint32_t width = 2000;
-	uint32_t height = 2000;
+	uint32_t width = 512;
+	uint32_t height = 512;
 
 	std::cout << "Rendering.\n";
 
