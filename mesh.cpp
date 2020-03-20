@@ -441,7 +441,7 @@ Object::intersect Mesh::intersect_ray(std::vector<Object*> &objects,
 		Vector3 gl_norm = to_global(norm);
 
 		if (!shadow) {
-			stat.color = get_color(gl_pos, gl_norm, dir, objects, lights,
+			stat.color = calculate_light(gl_pos, gl_norm, dir, objects, lights,
 				material(pol_res.Kd, pol_res.Ks, pol_res.Ns, pol_res.d));
 		}
 		stat.t = Gt;

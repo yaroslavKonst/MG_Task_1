@@ -1,6 +1,6 @@
 #include "object.h"
 
-Vector3 Object::get_color(Vertex3 pos, Vector3 normal, Vector3 dir,
+Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 	std::vector<Object*> &objects, std::vector<Light> &lights, material mat)
 {
 	Vector3 light_sum;

@@ -154,7 +154,7 @@ int main(int argc, const char **argv)
 	front.mat.Ns = 0;
 
 	Sphere sp3(Vertex3(60, -60, 260), 40, Vector3(0.7, 0.7, 0.7),
-		Vector3(0.2, 0.2, 0.2), 800, 1, 40);
+		Vector3(0.2, 0.2, 0.2), 50, 1, 40);
 
 // CAMERA
 	Camera cam;
@@ -237,7 +237,7 @@ int main(int argc, const char **argv)
 	}
 
 /*	// Sampling
-	std::cout << "Sampling.\n";
+	std::cout << "Filtering.\n";
 	std::vector<uint32_t> image_fin(width * height);
 
 	for (uint32_t i = 1; i < width - 1; ++i) {

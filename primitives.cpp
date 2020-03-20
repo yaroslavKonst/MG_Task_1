@@ -57,8 +57,8 @@ Object::intersect Triangle::intersect_ray(std::vector<Object*> &objects,
 				normals[2] * (1 - u - v)).normalize();
 			Vector3 light_sum;
 			if (!shadow) {
-				res.color = get_color(res.pos, res.normal, dir, objects, lights,
-					mat);
+				res.color = calculate_light(res.pos, res.normal, dir, objects,
+					lights, mat);
 			}
 		} else {
 			res.valid = false;
@@ -93,8 +93,8 @@ Object::intersect Sphere::intersect_ray(std::vector<Object*> &objects,
 		res.normal = (res.pos - pos).normalize();
 		Vector3 light_sum;
 		if (!shadow) {
-			res.color = get_color(res.pos, res.normal, dir, objects, lights,
-				mat);
+			res.color = calculate_light(res.pos, res.normal, dir, objects,
+				lights, mat);
 		}
 	} else {
 		res.valid = false;
@@ -160,11 +160,12 @@ Object::intersect Endless_plane::intersect_ray(std::vector<Object*> &objects,
 			Vector3 light_sum;
 			if (!shadow) {
 				if (!texture) {
-					res.color = get_color(res.pos, res.normal, dir, objects,
-						lights, mat);
+					res.color = calculate_light(res.pos, res.normal, dir,
+						objects, lights, mat);
 				} else {
-					res.color = get_color(res.pos, res.normal, dir, objects,
-						lights, material(texture->get_color(textures[0] * u +
+					res.color = calculate_light(res.pos, res.normal, dir,
+						objects, lights,
+						material(texture->get_color(textures[0] * u +
 						textures[1] * v + textures[2] * (1-u-v)), mat.Ks,
 						mat.Ns, mat.d, mat.alpha));
 				}
