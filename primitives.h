@@ -31,16 +31,11 @@ public:
 
 	material mat;
 
-	Sphere(Vertex3 p, double r, Vector3 kd, Vector3 ks, double ns,
-		double D, double a)
+	Sphere(Vertex3 p, double r, const material &m)
 	{
 		pos = p;
 		R = r;
-		mat.Kd = kd;
-		mat.Ks = ks;
-		mat.Ns = ns;
-		mat.d = D;
-		mat.alpha = a;
+		mat = m;
 	}
 };
 

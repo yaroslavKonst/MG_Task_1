@@ -47,28 +47,38 @@ int main(int argc, const char **argv)
 	if (cmdLineParams.find("-scene") != cmdLineParams.end())
 		sceneId = atoi(cmdLineParams["-scene"].c_str());
 
-	uint32_t color = 0;
+// Material definition.
+	Object::material blue(Vector3(0, 0, 0.4), Vector3(0.5, 0.5, 0.5),
+		300, 1, 40);
+
+	Object::material green1(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
+		500, 1, 40);
+
+	Object::material mirror(Vector3(0.7, 0.7, 0.7), Vector3(0.2, 0.2, 0.2),
+		800, 1, 40);
+
+	Object::material red(Vector3(0.8, 0, 0), Vector3(0.1, 0.1, 0.1),
+		200, 1, 40);
+
+	Object::material green(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
+		300, 1, 40);
+
 
 	std::cout << "Loading models.\n";
 
 // SCENE 0
-	Sphere sp_bl(Vertex3(0, -20, 300), 50, Vector3(0, 0, 0.4),
-		Vector3(0.5, 0.5, 0.5), 300, 1, 40);
+	Sphere sp_bl(Vertex3(0, -20, 300), 50, blue);
 
-	Sphere sp_bl1(Vertex3(-80, -40, 350), 20, Vector3(0, 0.9, 0),
-		Vector3(0.1, 0.1, 0.1), 500, 1, 40);
+	Sphere sp_bl1(Vertex3(-80, -40, 350), 20, green1);
 
 	Mesh plane("objects/planeAssembly.obj", -100, 140, 400, M_PI, M_PI / 8,
 		-M_PI / 10);
 
-	Sphere sp(Vertex3(100, 100, 700), 50, Vector3(0.7, 0.7, 0.7),
-		Vector3(0.2, 0.2, 0.2), 800, 1, 40);
+	Sphere sp(Vertex3(100, 100, 700), 50, mirror);
 
-	Sphere sp1(Vertex3(0, 50, 800), 30, Vector3(0.8, 0, 0),
-		Vector3(0.1, 0.1, 0.1), 200, 1, 40);
+	Sphere sp1(Vertex3(0, 50, 800), 30, red);
 
-	Sphere sp_gr(Vertex3(150, 200, 600), 50, Vector3(0, 0.9, 0),
-		Vector3(0.1, 0.1, 0.1), 300, 1, 40);
+	Sphere sp_gr(Vertex3(150, 200, 600), 50, green);
 
 	Endless_plane plain;
 	plain.vertices[0] = Vertex3(-500, -50, 500);
@@ -153,8 +163,7 @@ int main(int argc, const char **argv)
 	front.mat.Ks = Vector3();
 	front.mat.Ns = 0;
 
-	Sphere sp3(Vertex3(60, -60, 260), 40, Vector3(0.7, 0.7, 0.7),
-		Vector3(0.2, 0.2, 0.2), 50, 1, 40);
+	Sphere sp3(Vertex3(60, -60, 260), 40, mirror);
 
 // CAMERA
 	Camera cam;
@@ -193,14 +202,14 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 4000;
-	uint32_t height = 4000;
+	uint32_t width = 20000;
+	uint32_t height = 20000;
 
 	std::cout << "Rendering.\n";
 
 	std::vector<uint32_t> image(width * height);
 
-	#pragma omp parallel for private(color) shared(image, width, height) schedule(dynamic)
+	#pragma omp parallel for shared(image, width, height) schedule(dynamic)
 	for (uint32_t i = 0; i < width; ++i) {
 		if (i % 100 == 0) {
 			#pragma omp critical
@@ -222,6 +231,8 @@ int main(int argc, const char **argv)
 					info = info1;
 				}
 			}
+
+			uint32_t color;
 
 			if (info.valid) {
 				color = to_RGB(info.color);
