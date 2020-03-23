@@ -1,0 +1,88 @@
+Object:
+	Base class for all objects on the scene.
+
+	intersect: type
+		Structure, containing information about ray and object intersection.
+
+	material: type
+		Structure, containing material information.
+
+	texture:
+		Pointer to texture object.
+
+	intersect_ray: function
+		Calculates the result of ray and object intersection.
+
+	calculate_light: function
+		Calculates light (Phong + reflection) for any point of any object.
+
+Triangle: based on Object
+	Simple triangle.
+
+	vertices:
+		Positions of triangle corners.
+
+	normals:
+		Normals in triangle corners.
+
+	textures:
+		Texture position in triangle corners.
+
+	mat:
+		Material information.
+
+Sphere: based on Object
+	Sphere object.
+
+	pos:
+		Position of the sphere center.
+
+	R:
+		Sphere radius.
+
+	mat:
+		Sphere material information.
+
+Endless_plane: based on Triangle
+	Endless_plane primitive.
+	Has the same fields as triangle, but does not have borders.
+
+Mesh: based on Object
+	Triangle mesh, loaded from *.obj file.
+
+Texture:
+		Base class for all textures.
+
+	get_color: function
+		Calculates color of the texture in given point.
+
+TexChBoard: based on Texture
+	Chess board texture.
+
+Loader:
+	Parser for *.obj files.
+
+Camera:
+	Scene camera.
+
+	position:
+		Camera position.
+
+	phi, psi:
+		Camera rotation angles.
+
+	fov:
+		Camera field of view.
+
+	getDir: function
+		Returns a ray direction for the given screen width and height and
+		coordinates.
+
+Light:
+	Light source.
+
+	pos:
+		Light source position.
+
+	intensity:
+		Light source intensity.
