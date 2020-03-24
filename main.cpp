@@ -36,8 +36,7 @@ int main(int argc, const char **argv)
 		}
 	}
 
-	std::vector<Object*> objects;
-	std::vector<Light> lights;
+	Scene scene;
 
 	std::string outFilePath = "zout.bmp";
 	if (cmdLineParams.find("-out") != cmdLineParams.end())
@@ -48,19 +47,19 @@ int main(int argc, const char **argv)
 		sceneId = atoi(cmdLineParams["-scene"].c_str());
 
 // Material definition.
-	Object::material blue(Vector3(0, 0, 0.4), Vector3(0.5, 0.5, 0.5),
+	Material blue(Vector3(0, 0, 0.4), Vector3(0.5, 0.5, 0.5),
 		300, 1, 40);
 
-	Object::material green1(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
+	Material green1(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
 		500, 1, 40);
 
-	Object::material mirror(Vector3(0.7, 0.7, 0.7), Vector3(0.2, 0.2, 0.2),
+	Material mirror(Vector3(0.7, 0.7, 0.7), Vector3(0.2, 0.2, 0.2),
 		800, 1, 40);
 
-	Object::material red(Vector3(0.8, 0, 0), Vector3(0.1, 0.1, 0.1),
+	Material red(Vector3(0.8, 0, 0), Vector3(0.1, 0.1, 0.1),
 		200, 1, 40);
 
-	Object::material green(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
+	Material green(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
 		300, 1, 40);
 
 
@@ -169,32 +168,32 @@ int main(int argc, const char **argv)
 	Camera cam;
 
 	if (sceneId == 0) {
-		objects.push_back(&sp_bl);
-		objects.push_back(&sp_bl1);
-		objects.push_back(&plane);
-		objects.push_back(&sp);
-		objects.push_back(&sp1);
-		objects.push_back(&sp_gr);
-		objects.push_back(&plain);
-		lights.push_back(Light(Vertex3(-500, 100, 0), 500000));
-		lights.push_back(Light(Vertex3(500, 100, 200), 100000));
-		lights.push_back(Light(Vertex3(400, 0, 400), 20000));
-		lights.push_back(Light(Vertex3(-200, 100, 900), 100000));
-		lights.push_back(Light(Vertex3(400, 100, 900), 100000));
+		scene.add(&sp_bl);
+		scene.add(&sp_bl1);
+		scene.add(&plane);
+		scene.add(&sp);
+		scene.add(&sp1);
+		scene.add(&sp_gr);
+		scene.add(&plain);
+		scene.add(Light(Vertex3(-500, 100, 0), 500000));
+		scene.add(Light(Vertex3(500, 100, 200), 100000));
+		scene.add(Light(Vertex3(400, 0, 400), 20000));
+		scene.add(Light(Vertex3(-200, 100, 900), 100000));
+		scene.add(Light(Vertex3(400, 100, 900), 100000));
 
 		cam.position = Vertex3(0, 100, 0);
 		cam.phi = 0;
 		cam.psi = M_PI / 16;
 		cam.fov = M_PI / 2;
 	} else if (sceneId == 1) {
-		objects.push_back(&front);
-		objects.push_back(&back);
-		objects.push_back(&floor);
-		objects.push_back(&up);
-		objects.push_back(&left);
-		objects.push_back(&right);
-		objects.push_back(&sp3);
-		lights.push_back(Light(Vertex3(0, 80, 100), 40000));
+		scene.add(&front);
+		scene.add(&back);
+		scene.add(&floor);
+		scene.add(&up);
+		scene.add(&left);
+		scene.add(&right);
+		scene.add(&sp3);
+		scene.add(Light(Vertex3(0, 80, 100), 40000));
 
 		cam.position = Vertex3(0, 0, -80);
 		cam.phi = 0;
@@ -202,8 +201,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 20000;
-	uint32_t height = 20000;
+	uint32_t width = 2000;
+	uint32_t height = 2000;
 
 	std::cout << "Rendering.\n";
 
@@ -220,17 +219,8 @@ int main(int argc, const char **argv)
 		for (uint32_t j = 0; j < height; ++j) {
 			Vector3 dir = cam.getDir(i, j, width, height);
 
-			Object::intersect info;
-			info.valid = false;
-			info.t = 0;
-
-			for (unsigned int k = 0; k < objects.size(); ++k) {
-				Object::intersect info1 = objects[k]->intersect_ray(objects,
-					lights, cam.position, dir.normalize(), false);
-				if (!info.valid || (info1.valid && (info1.t < info.t))) {
-					info = info1;
-				}
-			}
+			Object::intersect info = scene.intersect_ray(cam.position,
+				dir.normalize(), false);
 
 			uint32_t color;
 
@@ -247,7 +237,7 @@ int main(int argc, const char **argv)
 		}
 	}
 
-/*	// Sampling
+/*	// Filtering
 	std::cout << "Filtering.\n";
 	std::vector<uint32_t> image_fin(width * height);
 

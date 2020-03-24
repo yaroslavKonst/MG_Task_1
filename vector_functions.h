@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include "base_classes.h"
+#include "material.h"
 
 inline Vector3 mirror(Vector3 obj, Vector3 base)
 {
@@ -14,14 +15,14 @@ inline Vector3 mirror(Vector3 obj, Vector3 base)
 	return ((base_n * ang_cos) + delta) * obj.length();
 }
 
-inline Vector3 get_Phong_light(Vector3 Kd, Vector3 Ks, double Ns, double alpha,
-	Vector3 normal, Vector3 dir, Vector3 light, double intensity)
+inline Vector3 get_Phong_light(Material mat, Vector3 normal,
+	Vector3 dir, Vector3 light, double intensity)
 {
 	Vector3 light_n = light.normalize();
 	Vector3 sum =
-		(Kd * light_n.dot(normal) * intensity) +
-		(Ks * pow(mirror(light_n, normal).dot((dir*(-1)).normalize()), alpha) *
-		intensity);
+		(mat.Kd * light_n.dot(normal) * intensity) +
+		(mat.Ks * pow(mirror(light_n, normal).dot((dir*(-1)).normalize()),
+		mat.alpha) * intensity);
 	return sum;
 }
 

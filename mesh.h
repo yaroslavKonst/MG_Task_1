@@ -8,6 +8,7 @@
 #include "object.h"
 #include "base_classes.h"
 #include "base_functions.h"
+#include "vector_functions.h"
 #include "loader.h"
 #include "light.h"
 
@@ -18,8 +19,7 @@ public:
 	Mesh(const Mesh& mesh);
 	~Mesh();
 
-	virtual intersect intersect_ray(std::vector<Object*> &objects,
-		std::vector<Light> &lights, Vertex3 origin, Vector3 dir,
+	virtual intersect intersect_ray(Scene &scene, Vertex3 origin, Vector3 dir,
 		bool shadow);
 
 private:

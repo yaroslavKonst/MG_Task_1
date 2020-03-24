@@ -354,8 +354,8 @@ Vector3 Mesh::to_global(Vector3 vector)
 	return global;
 }
 
-Object::intersect Mesh::intersect_ray(std::vector<Object*> &objects,
-	std::vector<Light> &lights, Vertex3 origin, Vector3 dir, bool shadow)
+Object::intersect Mesh::intersect_ray(Scene &scene, Vertex3 origin,
+	Vector3 dir, bool shadow)
 {
 	Vertex3 local_origin = to_local(origin);
 	Vector3 local_dir = to_local(dir);
@@ -441,8 +441,8 @@ Object::intersect Mesh::intersect_ray(std::vector<Object*> &objects,
 		Vector3 gl_norm = to_global(norm);
 
 		if (!shadow) {
-			stat.color = calculate_light(gl_pos, gl_norm, dir, objects, lights,
-				material(pol_res.Kd, pol_res.Ks, pol_res.Ns, pol_res.d));
+			stat.color = calculate_light(gl_pos, gl_norm, dir, scene,
+				Material(pol_res.Kd, pol_res.Ks, pol_res.Ns, pol_res.d));
 		}
 		stat.t = Gt;
 	}

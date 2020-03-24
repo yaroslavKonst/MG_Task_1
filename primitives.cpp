@@ -1,7 +1,7 @@
 #include "primitives.h"
 
-Object::intersect Triangle::intersect_ray(std::vector<Object*> &objects,
-	std::vector<Light> &lights, Vertex3 origin, Vector3 dir, bool shadow)
+Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
+	Vector3 dir, bool shadow)
 {
 	intersect res;
 
@@ -57,8 +57,8 @@ Object::intersect Triangle::intersect_ray(std::vector<Object*> &objects,
 				normals[2] * (1 - u - v)).normalize();
 			Vector3 light_sum;
 			if (!shadow) {
-				res.color = calculate_light(res.pos, res.normal, dir, objects,
-					lights, mat);
+				res.color = calculate_light(res.pos, res.normal, dir, scene,
+					mat);
 			}
 		} else {
 			res.valid = false;
@@ -67,8 +67,8 @@ Object::intersect Triangle::intersect_ray(std::vector<Object*> &objects,
 	return res;
 }
 
-Object::intersect Sphere::intersect_ray(std::vector<Object*> &objects,
-	std::vector<Light> &lights, Vertex3 origin, Vector3 dir, bool shadow)
+Object::intersect Sphere::intersect_ray(Scene &scene, Vertex3 origin,
+	Vector3 dir, bool shadow)
 {
 	dir = dir.normalize();
 	double a = pow(dir.X(), 2) + pow(dir.Y(), 2) + pow(dir.Z(), 2);
@@ -93,8 +93,7 @@ Object::intersect Sphere::intersect_ray(std::vector<Object*> &objects,
 		res.normal = (res.pos - pos).normalize();
 		Vector3 light_sum;
 		if (!shadow) {
-			res.color = calculate_light(res.pos, res.normal, dir, objects,
-				lights, mat);
+			res.color = calculate_light(res.pos, res.normal, dir, scene, mat);
 		}
 	} else {
 		res.valid = false;
@@ -102,8 +101,8 @@ Object::intersect Sphere::intersect_ray(std::vector<Object*> &objects,
 	return res;
 }
 
-Object::intersect Endless_plane::intersect_ray(std::vector<Object*> &objects,
-	std::vector<Light> &lights, Vertex3 origin, Vector3 dir, bool shadow)
+Object::intersect Endless_plane::intersect_ray(Scene &scene, Vertex3 origin,
+	Vector3 dir, bool shadow)
 {
 	intersect res;
 
@@ -161,11 +160,11 @@ Object::intersect Endless_plane::intersect_ray(std::vector<Object*> &objects,
 			if (!shadow) {
 				if (!texture) {
 					res.color = calculate_light(res.pos, res.normal, dir,
-						objects, lights, mat);
+						scene, mat);
 				} else {
 					res.color = calculate_light(res.pos, res.normal, dir,
-						objects, lights,
-						material(texture->get_color(textures[0] * u +
+						scene,
+						Material(texture->get_color(textures[0] * u +
 						textures[1] * v + textures[2] * (1-u-v)), mat.Ks,
 						mat.Ns, mat.d, mat.alpha));
 				}
