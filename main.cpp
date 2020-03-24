@@ -210,8 +210,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 2000;
-	uint32_t height = 2000;
+	uint32_t width = 512;
+	uint32_t height = 512;
 
 	std::cout << "Rendering.\n";
 

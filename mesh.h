@@ -55,6 +55,20 @@ private:
 		double Ns;  // reflection coeff 0 - 1000
 		double d;   // transparency coeff
 
+		polygon()
+		{
+			for (int i = 0; i < 3; ++i) {
+				vertices[i] = Vertex3();
+				normals[i] = Vector3();
+				textures[i] = Vector3();
+			}
+
+			Kd = Vector3();
+			Ks = Vector3();
+			Ns = 0;
+			d = 0;
+		}
+
 		bool in(double max_x, double min_x, double max_y, double min_y,
 				double max_z, double min_z) const
 		{
