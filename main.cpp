@@ -210,6 +210,13 @@ int main(int argc, const char **argv)
 		cam.phi = 0;
 		cam.psi = 0;
 		cam.fov = M_PI / 2;
+	} else if (sceneId == 2) {
+		scene.add(&plain);
+		scene.add(Light(Vertex3(0, 120, 500), 400000));
+		cam.position = Vertex3(0, 100, 0);
+		cam.phi = M_PI / 3;
+		cam.psi = 0;
+		cam.fov = M_PI / 2;
 	}
 
 	uint32_t width = 1000;
@@ -243,7 +250,7 @@ int main(int argc, const char **argv)
 
 			#pragma omp critical
 			{
-				image[j*height + width - i] = color;
+				image[j*height + width - i - 1] = color;
 			}
 		}
 	}
