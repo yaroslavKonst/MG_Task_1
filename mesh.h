@@ -8,9 +8,7 @@
 #include "object.h"
 #include "base_classes.h"
 #include "base_functions.h"
-#include "vector_functions.h"
 #include "loader.h"
-#include "light.h"
 
 class Mesh: public Object {
 public:
