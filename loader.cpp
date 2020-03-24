@@ -83,7 +83,7 @@ Loader::Item Loader::get()
 		int n1, n2, n3;
 		int t1, t2, t3;
 		sscanf(obj_line.c_str(), "f %u/%u/%u %u/%u/%u %u/%u/%u",
-			&v1, &t1, &n1, &v2, &t2, &n2, &v3, &t3, &n3);
+				&v1, &t1, &n1, &v2, &t2, &n2, &v3, &t3, &n3);
 		i.v1 = v1;
 		i.v2 = v2;
 		i.v3 = v3;
@@ -95,9 +95,9 @@ Loader::Item Loader::get()
 		i.t3 = t3;
 	} else if (obj_line.find("mtllib ") != std::string::npos) {
 		if (load_material_library(
-			obj_filename.substr(0, obj_filename.rfind("/") + 1) +
-			obj_line.substr(obj_line.find(" ") + 1)
-		)) {
+				obj_filename.substr(0, obj_filename.rfind("/") + 1) +
+				obj_line.substr(obj_line.find(" ") + 1))
+		) {
 			return get();
 		} else {
 			i.type = ERROR;

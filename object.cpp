@@ -1,7 +1,7 @@
 #include "object.h"
 
 Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
-	Scene &scene, Material mat)
+		Scene &scene, Material mat)
 {
 	Vector3 light_sum;
 	Vertex3 start = pos + normal * 0.001;
@@ -11,7 +11,7 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 			bool f = true;
 			for (unsigned int obj = 0; obj < scene.objects.size(); ++obj) {
 				intersect info = scene.objects[obj]->intersect_ray(
-					scene, start, lt.normalize(), true);
+						scene, start, lt.normalize(), true);
 				if (info.valid && info.t < lt.length()) {
 					f = false;
 					break;
@@ -19,7 +19,7 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 			}
 			if (f) {
 				light_sum += get_Phong_light(mat, normal, dir, lt,
-					scene.lights[l].intensity / pow(lt.length(), 2));
+						scene.lights[l].intensity / pow(lt.length(), 2));
 			}
 		}
 	}
@@ -32,14 +32,14 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 	}
 	if (info.valid) {
 		light_sum = (light_sum * (1 - (mat.Ns / 1000))) +
-			(info.color * (mat.Ns / 1000));
+				(info.color * (mat.Ns / 1000));
 	} else {
 		light_sum = light_sum * (1 - (mat.Ns / 1000));
 	}
 	light_sum = Vector3(
-		min(light_sum.X(), 1.0),
-		min(light_sum.Y(), 1.0),
-		min(light_sum.Z(), 1.0));
+			min(light_sum.X(), 1.0),
+			min(light_sum.Y(), 1.0),
+			min(light_sum.Z(), 1.0));
 	return light_sum;
 }
 
@@ -51,7 +51,7 @@ Object::intersect Scene::intersect_ray(Vertex3 pos, Vector3 dir, bool shadow)
 
 	for (unsigned int i = 0; i < objects.size(); ++i) {
 		Object::intersect info_t = objects[i]->intersect_ray(*this,
-			pos, dir.normalize(), shadow);
+				pos, dir.normalize(), shadow);
 		if (!info.valid || (info_t.valid && (info_t.t < info.t))) {
 			info = info_t;
 		}

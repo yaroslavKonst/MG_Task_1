@@ -1,7 +1,7 @@
 #include "primitives.h"
 
 Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
-	Vector3 dir, bool shadow)
+		Vector3 dir, bool shadow)
 {
 	intersect res;
 
@@ -11,24 +11,24 @@ Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
 	Vector3 D(dir);
 
 	double delta = Matrix3x3<double>(
-		D.X(), CA.X(), CB.X(),
-		D.Y(), CA.Y(), CB.Y(),
-		D.Z(), CA.Z(), CB.Z()).det();
+			D.X(), CA.X(), CB.X(),
+			D.Y(), CA.Y(), CB.Y(),
+			D.Z(), CA.Z(), CB.Z()).det();
 
 	double delta_t = Matrix3x3<double>(
-		CP.X(), CA.X(), CB.X(),
-		CP.Y(), CA.Y(), CB.Y(),
-		CP.Z(), CA.Z(), CB.Z()).det();
+			CP.X(), CA.X(), CB.X(),
+			CP.Y(), CA.Y(), CB.Y(),
+			CP.Z(), CA.Z(), CB.Z()).det();
 
 	double delta_u = Matrix3x3<double>(
-		D.X(), CP.X(), CB.X(),
-		D.Y(), CP.Y(), CB.Y(),
-		D.Z(), CP.Z(), CB.Z()).det();
+			D.X(), CP.X(), CB.X(),
+			D.Y(), CP.Y(), CB.Y(),
+			D.Z(), CP.Z(), CB.Z()).det();
 
 	double delta_v = Matrix3x3<double>(
-		D.X(), CA.X(), CP.X(),
-		D.Y(), CA.Y(), CP.Y(),
-		D.Z(), CA.Z(), CP.Z()).det();
+			D.X(), CA.X(), CP.X(),
+			D.Y(), CA.Y(), CP.Y(),
+			D.Z(), CA.Z(), CP.Z()).det();
 
 	double t, u, v;
 
@@ -42,23 +42,23 @@ Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
 			res.valid = true;
 			res.t = t;
 			res.pos = Vertex3(
-				vertices[0].X() * u +
-				vertices[1].X() * v +
-				vertices[2].X() * (1 - u - v),
-				vertices[0].Y() * u +
-				vertices[1].Y() * v +
-				vertices[2].Y() * (1 - u - v),
-				vertices[0].Z() * u +
-				vertices[1].Z() * v +
-				vertices[2].Z() * (1 - u - v));
+					vertices[0].X() * u +
+					vertices[1].X() * v +
+					vertices[2].X() * (1 - u - v),
+					vertices[0].Y() * u +
+					vertices[1].Y() * v +
+					vertices[2].Y() * (1 - u - v),
+					vertices[0].Z() * u +
+					vertices[1].Z() * v +
+					vertices[2].Z() * (1 - u - v));
 			res.normal = Vector3(
-				normals[0] * u +
-				normals[1] * v +
-				normals[2] * (1 - u - v)).normalize();
+					normals[0] * u +
+					normals[1] * v +
+					normals[2] * (1 - u - v)).normalize();
 			Vector3 light_sum;
 			if (!shadow) {
 				res.color = calculate_light(res.pos, res.normal, dir, scene,
-					mat);
+						mat);
 			}
 		} else {
 			res.valid = false;
@@ -68,18 +68,18 @@ Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
 }
 
 Object::intersect Sphere::intersect_ray(Scene &scene, Vertex3 origin,
-	Vector3 dir, bool shadow)
+		Vector3 dir, bool shadow)
 {
 	dir = dir.normalize();
 	double a = pow(dir.X(), 2) + pow(dir.Y(), 2) + pow(dir.Z(), 2);
 	double b =
-		2*origin.X()*dir.X() - 2*pos.X()*dir.X() +
-		2*origin.Y()*dir.Y() - 2*pos.Y()*dir.Y() +
-		2*origin.Z()*dir.Z() - 2*pos.Z()*dir.Z();
+			2*origin.X()*dir.X() - 2*pos.X()*dir.X() +
+			2*origin.Y()*dir.Y() - 2*pos.Y()*dir.Y() +
+			2*origin.Z()*dir.Z() - 2*pos.Z()*dir.Z();
 	double c =
-		pow(pos.X(), 2) + pow(pos.Y(), 2) + pow(pos.Z(), 2) - pow(R, 2) +
-		pow(origin.X(), 2) + pow(origin.Y(), 2) + pow(origin.Z(), 2) -
-		2*pos.X()*origin.X() - 2*pos.Y()*origin.Y() - 2*pos.Z()*origin.Z();
+			pow(pos.X(), 2) + pow(pos.Y(), 2) + pow(pos.Z(), 2) - pow(R, 2) +
+			pow(origin.X(), 2) + pow(origin.Y(), 2) + pow(origin.Z(), 2) -
+			2*pos.X()*origin.X() - 2*pos.Y()*origin.Y() - 2*pos.Z()*origin.Z();
 
 	double t1, t2;
 
@@ -102,7 +102,7 @@ Object::intersect Sphere::intersect_ray(Scene &scene, Vertex3 origin,
 }
 
 Object::intersect Endless_plane::intersect_ray(Scene &scene, Vertex3 origin,
-	Vector3 dir, bool shadow)
+		Vector3 dir, bool shadow)
 {
 	intersect res;
 
@@ -112,24 +112,24 @@ Object::intersect Endless_plane::intersect_ray(Scene &scene, Vertex3 origin,
 	Vector3 D(dir);
 
 	double delta = Matrix3x3<double>(
-		D.X(), CA.X(), CB.X(),
-		D.Y(), CA.Y(), CB.Y(),
-		D.Z(), CA.Z(), CB.Z()).det();
+			D.X(), CA.X(), CB.X(),
+			D.Y(), CA.Y(), CB.Y(),
+			D.Z(), CA.Z(), CB.Z()).det();
 
 	double delta_t = Matrix3x3<double>(
-		CP.X(), CA.X(), CB.X(),
-		CP.Y(), CA.Y(), CB.Y(),
-		CP.Z(), CA.Z(), CB.Z()).det();
+			CP.X(), CA.X(), CB.X(),
+			CP.Y(), CA.Y(), CB.Y(),
+			CP.Z(), CA.Z(), CB.Z()).det();
 
 	double delta_u = Matrix3x3<double>(
-		D.X(), CP.X(), CB.X(),
-		D.Y(), CP.Y(), CB.Y(),
-		D.Z(), CP.Z(), CB.Z()).det();
+			D.X(), CP.X(), CB.X(),
+			D.Y(), CP.Y(), CB.Y(),
+			D.Z(), CP.Z(), CB.Z()).det();
 
 	double delta_v = Matrix3x3<double>(
-		D.X(), CA.X(), CP.X(),
-		D.Y(), CA.Y(), CP.Y(),
-		D.Z(), CA.Z(), CP.Z()).det();
+			D.X(), CA.X(), CP.X(),
+			D.Y(), CA.Y(), CP.Y(),
+			D.Z(), CA.Z(), CP.Z()).det();
 
 	double t, u, v;
 
@@ -143,30 +143,30 @@ Object::intersect Endless_plane::intersect_ray(Scene &scene, Vertex3 origin,
 			res.valid = true;
 			res.t = t;
 			res.pos = Vertex3(
-				vertices[0].X() * u +
-				vertices[1].X() * v +
-				vertices[2].X() * (1 - u - v),
-				vertices[0].Y() * u +
-				vertices[1].Y() * v +
-				vertices[2].Y() * (1 - u - v),
-				vertices[0].Z() * u +
-				vertices[1].Z() * v +
-				vertices[2].Z() * (1 - u - v));
+					vertices[0].X() * u +
+					vertices[1].X() * v +
+					vertices[2].X() * (1 - u - v),
+					vertices[0].Y() * u +
+					vertices[1].Y() * v +
+					vertices[2].Y() * (1 - u - v),
+					vertices[0].Z() * u +
+					vertices[1].Z() * v +
+					vertices[2].Z() * (1 - u - v));
 			res.normal = Vector3(
-				normals[0] * u +
-				normals[1] * v +
-				normals[2] * (1 - u - v)).normalize();
+					normals[0] * u +
+					normals[1] * v +
+					normals[2] * (1 - u - v)).normalize();
 			Vector3 light_sum;
 			if (!shadow) {
 				if (!texture) {
 					res.color = calculate_light(res.pos, res.normal, dir,
-						scene, mat);
+							scene, mat);
 				} else {
 					res.color = calculate_light(res.pos, res.normal, dir,
-						scene,
-						Material(texture->get_color(textures[0] * u +
-						textures[1] * v + textures[2] * (1-u-v)), mat.Ks,
-						mat.Ns, mat.d, mat.alpha));
+							scene,
+							Material(texture->get_color(textures[0] * u +
+							textures[1] * v + textures[2] * (1-u-v)), mat.Ks,
+							mat.Ns, mat.d, mat.alpha));
 				}
 			}
 		} else {

@@ -1,7 +1,7 @@
 #include "mesh.h"
 
 Mesh::Mesh(std::string file, double x, double y, double z, double phi,
-	double psi, double theta)
+		double psi, double theta)
 {
 	X = x;
 	Y = y;
@@ -199,7 +199,7 @@ void Mesh::tree_elem::build(const std::vector<polygon> &pol)
 		for (int i = 0; i < sz; ++i) {
 			for (int j = 0; j < 8; ++j) {
 				if (pol[polygons[i]].in(lv[j]->max_x, lv[j]->min_x,
-					lv[j]->max_y, lv[j]->min_y, lv[j]->max_z, lv[j]->min_z)
+						lv[j]->max_y, lv[j]->min_y, lv[j]->max_z, lv[j]->min_z)
 				) {
 					lv[j]->polygons.push_back(polygons[i]);
 				}
@@ -262,22 +262,19 @@ Vertex3 Mesh::to_local(Vertex3 vertex)
 	local += Vector3(-X, -Y, -Z);
 	// rotation around Z
 	local = Vertex3(
-		local.X() * cos(-Theta) - local.Y() * sin(-Theta),
-		local.X() * sin(-Theta) + local.Y() * cos(-Theta),
-		local.Z()
-	);
+			local.X() * cos(-Theta) - local.Y() * sin(-Theta),
+			local.X() * sin(-Theta) + local.Y() * cos(-Theta),
+			local.Z());
 	// rotation around X
 	local = Vertex3(
-		local.X(),
-		local.Y() * cos(-Psi) - local.Z() * sin(-Psi),
-		local.Y() * sin(-Psi) + local.Z() * cos(-Psi)
-	);
+			local.X(),
+			local.Y() * cos(-Psi) - local.Z() * sin(-Psi),
+			local.Y() * sin(-Psi) + local.Z() * cos(-Psi));
 	// rotation around Y
 	local = Vertex3(
-		local.X() * cos(-Phi) + local.Z() * sin(-Phi),
-		local.Y(),
-		-local.X() * sin(-Phi) + local.Z() * cos(-Phi)
-	);
+			local.X() * cos(-Phi) + local.Z() * sin(-Phi),
+			local.Y(),
+			-local.X() * sin(-Phi) + local.Z() * cos(-Phi));
 	return local;
 }
 
@@ -286,22 +283,19 @@ Vertex3 Mesh::to_global(Vertex3 vertex)
 	Vertex3 global(vertex);
 	// rotation around Y
 	global = Vertex3(
-		global.X() * cos(Phi) + global.Z() * sin(Phi),
-		global.Y(),
-		-global.X() * sin(Phi) + global.Z() * cos(Phi)
-	);
+			global.X() * cos(Phi) + global.Z() * sin(Phi),
+			global.Y(),
+			-global.X() * sin(Phi) + global.Z() * cos(Phi));
 	// rotation around X
 	global = Vertex3(
-		global.X(),
-		global.Y() * cos(Psi) - global.Z() * sin(Psi),
-		global.Y() * sin(Psi) + global.Z() * cos(Psi)
-	);
+			global.X(),
+			global.Y() * cos(Psi) - global.Z() * sin(Psi),
+			global.Y() * sin(Psi) + global.Z() * cos(Psi));
 	// rotation around Z
 	global = Vertex3(
-		global.X() * cos(Theta) - global.Y() * sin(Theta),
-		global.X() * sin(Theta) + global.Y() * cos(Theta),
-		global.Z()
-	);
+			global.X() * cos(Theta) - global.Y() * sin(Theta),
+			global.X() * sin(Theta) + global.Y() * cos(Theta),
+			global.Z());
 	global += Vector3(X, Y, Z);
 	return global;
 }
@@ -311,22 +305,19 @@ Vector3 Mesh::to_local(Vector3 vector)
 	Vector3 local(vector);
 	// rotation around Z
 	local = Vector3(
-		local.X() * cos(-Theta) - local.Y() * sin(-Theta),
-		local.X() * sin(-Theta) + local.Y() * cos(-Theta),
-		local.Z()
-	);
+			local.X() * cos(-Theta) - local.Y() * sin(-Theta),
+			local.X() * sin(-Theta) + local.Y() * cos(-Theta),
+			local.Z());
 	// rotation around X
 	local = Vector3(
-		local.X(),
-		local.Y() * cos(-Psi) - local.Z() * sin(-Psi),
-		local.Y() * sin(-Psi) + local.Z() * cos(-Psi)
-	);
+			local.X(),
+			local.Y() * cos(-Psi) - local.Z() * sin(-Psi),
+			local.Y() * sin(-Psi) + local.Z() * cos(-Psi));
 	// rotation around Y
 	local = Vector3(
-		local.X() * cos(-Phi) + local.Z() * sin(-Phi),
-		local.Y(),
-		-local.X() * sin(-Phi) + local.Z() * cos(-Phi)
-	);
+			local.X() * cos(-Phi) + local.Z() * sin(-Phi),
+			local.Y(),
+			-local.X() * sin(-Phi) + local.Z() * cos(-Phi));
 	return local;
 }
 
@@ -335,22 +326,19 @@ Vector3 Mesh::to_global(Vector3 vector)
 	Vector3 global(vector);
 	// rotation around Y
 	global = Vector3(
-		global.X() * cos(Phi) + global.Z() * sin(Phi),
-		global.Y(),
-		-global.X() * sin(Phi) + global.Z() * cos(Phi)
-	);
+			global.X() * cos(Phi) + global.Z() * sin(Phi),
+			global.Y(),
+			-global.X() * sin(Phi) + global.Z() * cos(Phi));
 	// rotation around X
 	global = Vector3(
-		global.X(),
-		global.Y() * cos(Psi) - global.Z() * sin(Psi),
-		global.Y() * sin(Psi) + global.Z() * cos(Psi)
-	);
+			global.X(),
+			global.Y() * cos(Psi) - global.Z() * sin(Psi),
+			global.Y() * sin(Psi) + global.Z() * cos(Psi));
 	// rotation around Z
 	global = Vector3(
-		global.X() * cos(Theta) - global.Y() * sin(Theta),
-		global.X() * sin(Theta) + global.Y() * cos(Theta),
-		global.Z()
-	);
+			global.X() * cos(Theta) - global.Y() * sin(Theta),
+			global.X() * sin(Theta) + global.Y() * cos(Theta),
+			global.Z());
 	return global;
 }
 
@@ -381,22 +369,24 @@ Object::intersect Mesh::intersect_ray(Scene &scene, Vertex3 origin,
 			Vector3 D(local_dir);
 
 			double delta = Matrix3x3<double>(
-				D.X(), CA.X(), CB.X(),
-				D.Y(), CA.Y(), CB.Y(),
-				D.Z(), CA.Z(), CB.Z()).det();
+					D.X(), CA.X(), CB.X(),
+					D.Y(), CA.Y(), CB.Y(),
+					D.Z(), CA.Z(), CB.Z()).det();
 
 			double delta_t = Matrix3x3<double>(
-				CP.X(), CA.X(), CB.X(),
-				CP.Y(), CA.Y(), CB.Y(),
-				CP.Z(), CA.Z(), CB.Z()).det();
+					CP.X(), CA.X(), CB.X(),
+					CP.Y(), CA.Y(), CB.Y(),
+					CP.Z(), CA.Z(), CB.Z()).det();
+
 			double delta_u = Matrix3x3<double>(
-				D.X(), CP.X(), CB.X(),
-				D.Y(), CP.Y(), CB.Y(),
-				D.Z(), CP.Z(), CB.Z()).det();
+					D.X(), CP.X(), CB.X(),
+					D.Y(), CP.Y(), CB.Y(),
+					D.Z(), CP.Z(), CB.Z()).det();
+
 			double delta_v = Matrix3x3<double>(
-				D.X(), CA.X(), CP.X(),
-				D.Y(), CA.Y(), CP.Y(),
-				D.Z(), CA.Z(), CP.Z()).det();
+					D.X(), CA.X(), CP.X(),
+					D.Y(), CA.Y(), CP.Y(),
+					D.Z(), CA.Z(), CP.Z()).det();
 
 			if (delta == 0) {
 				continue;
@@ -407,8 +397,8 @@ Object::intersect Mesh::intersect_ray(Scene &scene, Vertex3 origin,
 			double v = delta_v / delta;
 
 			if (u >= 0 && v >= 0 && 1 - u - v >= 0 && t > 0 &&
-				(t < Gt || Gt < 0))
-			{
+					(t < Gt || Gt < 0)
+			) {
 				Gt = t;
 				Gu = u;
 				Gv = v;
@@ -422,27 +412,27 @@ Object::intersect Mesh::intersect_ray(Scene &scene, Vertex3 origin,
 		stat.valid = true;
 
 		Vector3 norm = (
-			pol_res.normals[0] * Gu +
-			pol_res.normals[1] * Gv +
-			pol_res.normals[2] * (1 - Gu - Gv)).normalize();
+				pol_res.normals[0] * Gu +
+				pol_res.normals[1] * Gv +
+				pol_res.normals[2] * (1 - Gu - Gv)).normalize();
 
 		Vertex3 pos(
-			pol_res.vertices[0].X() * Gu +
-			pol_res.vertices[1].X() * Gv +
-			pol_res.vertices[2].X() * (1 - Gu - Gv),
-			pol_res.vertices[0].Y() * Gu +
-			pol_res.vertices[1].Y() * Gv +
-			pol_res.vertices[2].Y() * (1 - Gu - Gv),
-			pol_res.vertices[0].Z() * Gu +
-			pol_res.vertices[1].Z() * Gv +
-			pol_res.vertices[2].Z() * (1 - Gu - Gv));
+				pol_res.vertices[0].X() * Gu +
+				pol_res.vertices[1].X() * Gv +
+				pol_res.vertices[2].X() * (1 - Gu - Gv),
+				pol_res.vertices[0].Y() * Gu +
+				pol_res.vertices[1].Y() * Gv +
+				pol_res.vertices[2].Y() * (1 - Gu - Gv),
+				pol_res.vertices[0].Z() * Gu +
+				pol_res.vertices[1].Z() * Gv +
+				pol_res.vertices[2].Z() * (1 - Gu - Gv));
 
 		Vertex3 gl_pos = to_global(pos);
 		Vector3 gl_norm = to_global(norm);
 
 		if (!shadow) {
 			stat.color = calculate_light(gl_pos, gl_norm, dir, scene,
-				Material(pol_res.Kd, pol_res.Ks, pol_res.Ns, pol_res.d));
+					Material(pol_res.Kd, pol_res.Ks, pol_res.Ns, pol_res.d));
 		}
 		stat.t = Gt;
 	}

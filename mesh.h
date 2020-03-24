@@ -13,12 +13,12 @@
 class Mesh: public Object {
 public:
 	Mesh(std::string file = std::string(""), double x = 0, double y = 0,
-		double z = 0, double phi = 0, double psi = 0, double theta = 0);
+			double z = 0, double phi = 0, double psi = 0, double theta = 0);
 	Mesh(const Mesh& mesh);
 	~Mesh();
 
 	virtual intersect intersect_ray(Scene &scene, Vertex3 origin, Vector3 dir,
-		bool shadow);
+			bool shadow);
 
 private:
 	double X;
@@ -54,16 +54,17 @@ private:
 		Vector3 Ks; // reflection color
 		double Ns;  // reflection coeff 0 - 1000
 		double d;   // transparency coeff
+
 		bool in(double max_x, double min_x, double max_y, double min_y,
-			double max_z, double min_z) const
+				double max_z, double min_z) const
 		{
 			for (int i = 0; i < 3; ++i) {
 				double x = vertices[i].X();
 				double y = vertices[i].Y();
 				double z = vertices[i].Z();
 				if (min_x <= x && x <= max_x &&
-					min_y <= y && y <= max_y &&
-					min_z <= z && z <= max_z
+						min_y <= y && y <= max_y &&
+						min_z <= z && z <= max_z
 				) {
 					return true;
 				}
@@ -83,12 +84,14 @@ private:
 		double min_y;
 		double max_z;
 		double min_z;
+
 		tree_elem()
 		{
 			for (int i = 0; i < 8; ++i) {
 				lv[i] = 0;
 			}
 		}
+
 		tree_elem(const tree_elem &te)
 		{
 			polygons = te.polygons;
@@ -106,7 +109,9 @@ private:
 			max_z = te.max_z;
 			min_z = te.min_z;
 		}
+
 		void build(const std::vector<polygon> &pol);
+
 		~tree_elem()
 		{
 			for (int i = 0; i < 8; ++i) {
@@ -115,6 +120,7 @@ private:
 				}
 			}
 		}
+
 		list<tree_elem*> check_ray(Vertex3 origin, Vector3 dir);
 	};
 

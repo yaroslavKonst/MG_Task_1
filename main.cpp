@@ -57,19 +57,19 @@ int main(int argc, const char **argv)
 
 // Material definition.
 	Material blue(Vector3(0, 0, 0.4), Vector3(0.5, 0.5, 0.5),
-		300, 1, 40);
+			300, 1, 40);
 
 	Material green1(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
-		500, 1, 40);
+			500, 1, 40);
 
 	Material mirror(Vector3(0.7, 0.7, 0.7), Vector3(0.2, 0.2, 0.2),
-		800, 1, 40);
+			800, 1, 40);
 
 	Material red(Vector3(0.8, 0, 0), Vector3(0.1, 0.1, 0.1),
-		200, 1, 40);
+			200, 1, 40);
 
 	Material green(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
-		300, 1, 40);
+			300, 1, 40);
 
 
 	std::cout << "Loading models.\n";
@@ -80,7 +80,7 @@ int main(int argc, const char **argv)
 	Sphere sp_bl1(Vertex3(-80, -40, 350), 20, green1);
 
 	Mesh plane("objects/planeAssembly.obj", -100, 140, 400, M_PI, M_PI / 8,
-		-M_PI / 10);
+			-M_PI / 10);
 
 	Sphere sp(Vertex3(100, 100, 700), 50, mirror);
 
@@ -229,7 +229,7 @@ int main(int argc, const char **argv)
 			Vector3 dir = cam.getDir(i, j, width, height);
 
 			Object::intersect info = scene.intersect_ray(cam.position,
-				dir.normalize(), false);
+					dir.normalize(), false);
 
 			uint32_t color;
 
@@ -253,11 +253,11 @@ int main(int argc, const char **argv)
 	for (uint32_t i = 1; i < width - 1; ++i) {
 		for (uint32_t j = 1; j < height - 1; ++j) {
 			image_fin[i*height + j] = to_RGB(
-				(from_RGB(image[i*height + j]) +
-				from_RGB(image[i*height + j + 1]) +
-				from_RGB(image[i*height + j - 1]) +
-				from_RGB(image[(i + 1)*height + j]) +
-				from_RGB(image[(i - 1)*height + j])) * (1.0 / 5.0));
+					(from_RGB(image[i*height + j]) +
+					from_RGB(image[i*height + j + 1]) +
+					from_RGB(image[i*height + j - 1]) +
+					from_RGB(image[(i + 1)*height + j]) +
+					from_RGB(image[(i - 1)*height + j])) * (1.0 / 5.0));
 		}
 	}
 */

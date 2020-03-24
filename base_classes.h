@@ -162,10 +162,9 @@ inline double Vector3::dot(const Vector3 &vector) const
 inline Vector3 Vector3::operator*(const Vector3 &vector) const
 {
 	return Vector3(
-		y * vector.z - z * vector.y,
-		z * vector.x - x * vector.z,
-		x * vector.y - y * vector.x
-	);
+			y * vector.z - z * vector.y,
+			z * vector.x - x * vector.z,
+			x * vector.y - y * vector.x);
 }
 
 inline Vector3 Vector3::operator*(double a) const
@@ -296,11 +295,11 @@ public:
 	T det()
 	{
 		return cont[0][0] * cont[1][1] * cont[2][2] +
-			cont[0][1] * cont[1][2] * cont[2][0] +
-			cont[0][2] * cont[1][0] * cont[2][1] -
-			cont[0][2] * cont[1][1] * cont[2][0] -
-			cont[0][1] * cont[1][0] * cont[2][2] -
-			cont[0][0] * cont[1][2] * cont[2][1];
+				cont[0][1] * cont[1][2] * cont[2][0] +
+				cont[0][2] * cont[1][0] * cont[2][1] -
+				cont[0][2] * cont[1][1] * cont[2][0] -
+				cont[0][1] * cont[1][0] * cont[2][2] -
+				cont[0][0] * cont[1][2] * cont[2][1];
 	}
 
 private:
