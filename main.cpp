@@ -76,6 +76,7 @@ int main(int argc, const char **argv)
 
 // SCENE 0
 	Sphere sp_bl(Vertex3(0, -20, 300), 50, blue);
+	Sphere sp_bl3(Vertex3(120, -20, 300), 50, blue);
 
 	Sphere sp_bl1(Vertex3(-80, -40, 350), 20, green1);
 
@@ -179,6 +180,7 @@ int main(int argc, const char **argv)
 	if (sceneId == 0) {
 		scene.add(&sp_bl);
 		scene.add(&sp_bl1);
+		scene.add(&sp_bl3);
 		scene.add(&plane);
 		scene.add(&sp);
 		scene.add(&sp1);
@@ -210,8 +212,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 512;
-	uint32_t height = 512;
+	uint32_t width = 1000;
+	uint32_t height = 1000;
 
 	std::cout << "Rendering.\n";
 
