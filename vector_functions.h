@@ -26,4 +26,7 @@ inline Vector3 get_Phong_light(Material mat, Vector3 normal,
 	return sum;
 }
 
+bool triangle_ray_intersection(Vertex3 *vertices, Vertex3 origin, Vector3 dir,
+		double &t, double &u, double &v);
+
 #endif

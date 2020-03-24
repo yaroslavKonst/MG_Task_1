@@ -5,39 +5,11 @@ Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
 {
 	intersect res;
 
-	Vector3 CA = vertices[2] - vertices[0];
-	Vector3 CB = vertices[2] - vertices[1];
-	Vector3 CP = vertices[2] - origin;
-	Vector3 D(dir);
-
-	double delta = Matrix3x3<double>(
-			D.X(), CA.X(), CB.X(),
-			D.Y(), CA.Y(), CB.Y(),
-			D.Z(), CA.Z(), CB.Z()).det();
-
-	double delta_t = Matrix3x3<double>(
-			CP.X(), CA.X(), CB.X(),
-			CP.Y(), CA.Y(), CB.Y(),
-			CP.Z(), CA.Z(), CB.Z()).det();
-
-	double delta_u = Matrix3x3<double>(
-			D.X(), CP.X(), CB.X(),
-			D.Y(), CP.Y(), CB.Y(),
-			D.Z(), CP.Z(), CB.Z()).det();
-
-	double delta_v = Matrix3x3<double>(
-			D.X(), CA.X(), CP.X(),
-			D.Y(), CA.Y(), CP.Y(),
-			D.Z(), CA.Z(), CP.Z()).det();
-
 	double t, u, v;
 
-	if (delta == 0) {
+	if (!triangle_ray_intersection(vertices, origin, dir, t, u, v)) {
 		res.valid = false;
 	} else {
-		t = delta_t / delta;
-		u = delta_u / delta;
-		v = delta_v / delta;
 		if (u >= 0 && v >= 0 && 1 - u - v >= 0 && t > 0) {
 			res.valid = true;
 			res.t = t;
@@ -106,39 +78,11 @@ Object::intersect Endless_plane::intersect_ray(Scene &scene, Vertex3 origin,
 {
 	intersect res;
 
-	Vector3 CA = vertices[2] - vertices[0];
-	Vector3 CB = vertices[2] - vertices[1];
-	Vector3 CP = vertices[2] - origin;
-	Vector3 D(dir);
-
-	double delta = Matrix3x3<double>(
-			D.X(), CA.X(), CB.X(),
-			D.Y(), CA.Y(), CB.Y(),
-			D.Z(), CA.Z(), CB.Z()).det();
-
-	double delta_t = Matrix3x3<double>(
-			CP.X(), CA.X(), CB.X(),
-			CP.Y(), CA.Y(), CB.Y(),
-			CP.Z(), CA.Z(), CB.Z()).det();
-
-	double delta_u = Matrix3x3<double>(
-			D.X(), CP.X(), CB.X(),
-			D.Y(), CP.Y(), CB.Y(),
-			D.Z(), CP.Z(), CB.Z()).det();
-
-	double delta_v = Matrix3x3<double>(
-			D.X(), CA.X(), CP.X(),
-			D.Y(), CA.Y(), CP.Y(),
-			D.Z(), CA.Z(), CP.Z()).det();
-
 	double t, u, v;
 
-	if (delta == 0) {
+	if (!triangle_ray_intersection(vertices, origin, dir, t, u, v)) {
 		res.valid = false;
 	} else {
-		t = delta_t / delta;
-		u = delta_u / delta;
-		v = delta_v / delta;
 		if (t > 0.0) {
 			res.valid = true;
 			res.t = t;

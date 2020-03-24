@@ -7,6 +7,7 @@
 #include <math.h>
 #include "object.h"
 #include "base_classes.h"
+#include "vector_functions.h"
 #include "material.h"
 #include "texture.h"
 
