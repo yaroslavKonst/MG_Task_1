@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <omp.h>
 
 #include "base_classes.h"
 #include "object.h"
@@ -45,6 +46,14 @@ int main(int argc, const char **argv)
 	int sceneId = 0;
 	if (cmdLineParams.find("-scene") != cmdLineParams.end())
 		sceneId = atoi(cmdLineParams["-scene"].c_str());
+
+	int threadNum = 0;
+	if (cmdLineParams.find("-threads") != cmdLineParams.end())
+		threadNum = atoi(cmdLineParams["-threads"].c_str());
+
+	if (threadNum > 0) {
+		omp_set_num_threads(threadNum);
+	}
 
 // Material definition.
 	Material blue(Vector3(0, 0, 0.4), Vector3(0.5, 0.5, 0.5),
