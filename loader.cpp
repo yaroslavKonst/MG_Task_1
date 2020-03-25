@@ -59,7 +59,7 @@ Loader::Item Loader::get()
 	Item i;
 	i.valid = true;
 
-	if (obj_line.size() == 0) {
+	if (obj_line.size() == 0 || obj_line[0] == '#') {
 		return get();
 	} else if (obj_line.find("v ") != std::string::npos) {
 		i.type = V;
@@ -100,6 +100,7 @@ Loader::Item Loader::get()
 		) {
 			return get();
 		} else {
+			throw "Material library error";
 			i.type = ERROR;
 		}
 	} else if (obj_line.find("usemtl ") != std::string::npos) {
