@@ -363,38 +363,13 @@ Object::intersect Mesh::intersect_ray(Scene &scene, Vertex3 origin,
 		for (unsigned int i = 0; i < cur->polygons.size(); ++i) {
 			polygon cur_pol = polygons[cur->polygons[i]];
 
-			Vector3 CA = cur_pol.vertices[2] - cur_pol.vertices[0];
-			Vector3 CB = cur_pol.vertices[2] - cur_pol.vertices[1];
-			Vector3 CP = cur_pol.vertices[2] - local_origin;
-			Vector3 D(local_dir);
+			double t, u, v;
 
-			double delta = Matrix3x3<double>(
-					D.X(), CA.X(), CB.X(),
-					D.Y(), CA.Y(), CB.Y(),
-					D.Z(), CA.Z(), CB.Z()).det();
-
-			double delta_t = Matrix3x3<double>(
-					CP.X(), CA.X(), CB.X(),
-					CP.Y(), CA.Y(), CB.Y(),
-					CP.Z(), CA.Z(), CB.Z()).det();
-
-			double delta_u = Matrix3x3<double>(
-					D.X(), CP.X(), CB.X(),
-					D.Y(), CP.Y(), CB.Y(),
-					D.Z(), CP.Z(), CB.Z()).det();
-
-			double delta_v = Matrix3x3<double>(
-					D.X(), CA.X(), CP.X(),
-					D.Y(), CA.Y(), CP.Y(),
-					D.Z(), CA.Z(), CP.Z()).det();
-
-			if (delta == 0) {
+			if (!triangle_ray_intersection(cur_pol.vertices, local_origin,
+					local_dir, t, u, v)
+			) {
 				continue;
 			}
-
-			double t = delta_t / delta;
-			double u = delta_u / delta;
-			double v = delta_v / delta;
 
 			if (u >= 0 && v >= 0 && 1 - u - v >= 0 && t > 0 &&
 					(t < Gt || Gt < 0)
