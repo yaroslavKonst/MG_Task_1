@@ -204,10 +204,10 @@ int main(int argc, const char **argv)
 		scene.add(&left);
 		scene.add(&right);
 		scene.add(&sp3);
-		scene.add(Light(Vertex3(20, 80, 120), 10000));
-		scene.add(Light(Vertex3(20, 80, 80), 10000));
-		scene.add(Light(Vertex3(-20, 80, 120), 10000));
-		scene.add(Light(Vertex3(-20, 80, 80), 10000));
+		scene.add(Light(Vertex3(20, 80, 120), 100));
+		scene.add(Light(Vertex3(20, 80, 80), 100));
+		scene.add(Light(Vertex3(-20, 80, 120), 100));
+		scene.add(Light(Vertex3(-20, 80, 80), 100));
 
 		cam.position = Vertex3(0, 0, -80);
 		cam.phi = 0;
@@ -222,8 +222,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 2000;
-	uint32_t height = 2000;
+	uint32_t width = 512;
+	uint32_t height = 512;
 
 	std::cout << "Rendering.\n";
 
@@ -231,7 +231,7 @@ int main(int argc, const char **argv)
 
 	#pragma omp parallel for shared(image, width, height) schedule(dynamic)
 	for (uint32_t i = 0; i < width; ++i) {
-		if (i % 100 == 0) {
+		if (i % 10 == 0) {
 			#pragma omp critical
 			{
 				std::cout << i << std::endl;
@@ -240,20 +240,31 @@ int main(int argc, const char **argv)
 		for (uint32_t j = 0; j < height; ++j) {
 			Vector3 dir = cam.getDir(i, j, width, height);
 
-			Object::intersect info = scene.intersect_ray(cam.position,
-					dir.normalize(), false, 100);
+			Vector3 color;
 
-			uint32_t color;
+			if (sceneId != 1) {
+				Object::intersect info = scene.intersect_ray(cam.position,
+						dir.normalize(), false, 100, false);
 
-			if (info.valid) {
-				color = to_RGB(info.color);
+				if (info.valid) {
+					color = info.color;
+				} else {
+					color = Vector3(); // RED | GREEN | BLUE;
+				}
 			} else {
-				color = 0; // RED | GREEN | BLUE;
+				color = Vector3();
+				for (int k = 0; k < 100; ++k) {
+					Object::intersect info = scene.intersect_ray(cam.position,
+							dir.normalize(), false, 5, true);
+					if (info.valid) {
+						color += info.color;
+					}
+				}
 			}
 
 			#pragma omp critical
 			{
-				image[j*height + width - i - 1] = color;
+				image[j*height + width - i - 1] = to_RGB(color);
 			}
 		}
 	}

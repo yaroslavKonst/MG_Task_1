@@ -3,6 +3,7 @@
 #define OBJECT_H
 
 #include <vector>
+#include <random>
 #include "base_classes.h"
 #include "base_functions.h"
 #include "material.h"
@@ -35,10 +36,13 @@ public:
 	{ }
 
 	virtual intersect intersect_ray(Scene &scene, Vertex3 origin,
-			Vector3 dir, bool shadow, int depth) = 0;
+			Vector3 dir, bool shadow, int depth, bool path) = 0;
 
 	Vector3 calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
-			Scene &scene, Material mat, int depth);
+			Scene &scene, Material mat, int depth, bool path);
+
+private:
+	static std::mt19937 random_engine;
 };
 
 class Scene {
@@ -47,7 +51,7 @@ public:
 	std::vector<Light> lights;
 
 	Object::intersect intersect_ray(Vertex3 pos, Vector3 dir, bool shadow,
-			int depth);
+			int depth, bool path);
 
 	void add(Object *obj)
 	{
