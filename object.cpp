@@ -1,7 +1,7 @@
 #include "object.h"
 
 Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
-		Scene &scene, Material mat)
+		Scene &scene, Material mat, int depth)
 {
 	Vector3 light_sum;
 	Vertex3 start = pos + normal * 0.001;
@@ -11,7 +11,7 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 			bool f = true;
 			for (unsigned int obj = 0; obj < scene.objects.size(); ++obj) {
 				intersect info = scene.objects[obj]->intersect_ray(
-						scene, start, lt.normalize(), true);
+						scene, start, lt.normalize(), true, depth);
 				if (info.valid && info.t < lt.length()) {
 					f = false;
 					break;
@@ -27,8 +27,8 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 	intersect info;
 	info.valid = false;
 	info.t = 0;
-	if (mat.Ns > 0) {
-		info = scene.intersect_ray(start, ref_dir, false);
+	if (mat.Ns > 0 && depth > 0) {
+		info = scene.intersect_ray(start, ref_dir, false, depth - 1);
 	}
 	if (info.valid) {
 		light_sum = (light_sum * (1 - (mat.Ns / 1000))) +
@@ -43,7 +43,8 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 	return light_sum;
 }
 
-Object::intersect Scene::intersect_ray(Vertex3 pos, Vector3 dir, bool shadow)
+Object::intersect Scene::intersect_ray(Vertex3 pos, Vector3 dir, bool shadow,
+		int depth)
 {
 	Object::intersect info;
 	info.valid = false;
@@ -51,7 +52,7 @@ Object::intersect Scene::intersect_ray(Vertex3 pos, Vector3 dir, bool shadow)
 
 	for (unsigned int i = 0; i < objects.size(); ++i) {
 		Object::intersect info_t = objects[i]->intersect_ray(*this,
-				pos, dir.normalize(), shadow);
+				pos, dir.normalize(), shadow, depth);
 		if (!info.valid || (info_t.valid && (info_t.t < info.t))) {
 			info = info_t;
 		}

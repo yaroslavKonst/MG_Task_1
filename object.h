@@ -35,10 +35,10 @@ public:
 	{ }
 
 	virtual intersect intersect_ray(Scene &scene, Vertex3 origin,
-			Vector3 dir, bool shadow) = 0;
+			Vector3 dir, bool shadow, int depth) = 0;
 
 	Vector3 calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
-			Scene &scene, Material mat);
+			Scene &scene, Material mat, int depth);
 };
 
 class Scene {
@@ -46,7 +46,8 @@ public:
 	std::vector<Object*> objects;
 	std::vector<Light> lights;
 
-	Object::intersect intersect_ray(Vertex3 pos, Vector3 dir, bool shadow);
+	Object::intersect intersect_ray(Vertex3 pos, Vector3 dir, bool shadow,
+			int depth);
 
 	void add(Object *obj)
 	{

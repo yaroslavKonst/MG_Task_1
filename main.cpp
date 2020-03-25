@@ -187,7 +187,7 @@ int main(int argc, const char **argv)
 		scene.add(&sp_gr);
 		scene.add(&plain);
 		scene.add(Light(Vertex3(-500, 100, 0), 500000));
-		scene.add(Light(Vertex3(500, 100, 200), 100000));
+		scene.add(Light(Vertex3(500, 100, 200), 200000));
 		scene.add(Light(Vertex3(400, 0, 400), 20000));
 		scene.add(Light(Vertex3(-200, 100, 900), 100000));
 		scene.add(Light(Vertex3(400, 100, 900), 100000));
@@ -204,7 +204,10 @@ int main(int argc, const char **argv)
 		scene.add(&left);
 		scene.add(&right);
 		scene.add(&sp3);
-		scene.add(Light(Vertex3(0, 80, 100), 40000));
+		scene.add(Light(Vertex3(20, 80, 120), 10000));
+		scene.add(Light(Vertex3(20, 80, 80), 10000));
+		scene.add(Light(Vertex3(-20, 80, 120), 10000));
+		scene.add(Light(Vertex3(-20, 80, 80), 10000));
 
 		cam.position = Vertex3(0, 0, -80);
 		cam.phi = 0;
@@ -219,8 +222,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 1000;
-	uint32_t height = 1000;
+	uint32_t width = 2000;
+	uint32_t height = 2000;
 
 	std::cout << "Rendering.\n";
 
@@ -238,7 +241,7 @@ int main(int argc, const char **argv)
 			Vector3 dir = cam.getDir(i, j, width, height);
 
 			Object::intersect info = scene.intersect_ray(cam.position,
-					dir.normalize(), false);
+					dir.normalize(), false, 100);
 
 			uint32_t color;
 

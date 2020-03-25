@@ -1,7 +1,7 @@
 #include "primitives.h"
 
 Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
-		Vector3 dir, bool shadow)
+		Vector3 dir, bool shadow, int depth)
 {
 	intersect res;
 
@@ -30,7 +30,7 @@ Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
 			Vector3 light_sum;
 			if (!shadow) {
 				res.color = calculate_light(res.pos, res.normal, dir, scene,
-						mat);
+						mat, depth);
 			}
 		} else {
 			res.valid = false;
@@ -40,7 +40,7 @@ Object::intersect Triangle::intersect_ray(Scene &scene, Vertex3 origin,
 }
 
 Object::intersect Sphere::intersect_ray(Scene &scene, Vertex3 origin,
-		Vector3 dir, bool shadow)
+		Vector3 dir, bool shadow, int depth)
 {
 	dir = dir.normalize();
 	double a = pow(dir.X(), 2) + pow(dir.Y(), 2) + pow(dir.Z(), 2);
@@ -65,7 +65,8 @@ Object::intersect Sphere::intersect_ray(Scene &scene, Vertex3 origin,
 		res.normal = (res.pos - pos).normalize();
 		Vector3 light_sum;
 		if (!shadow) {
-			res.color = calculate_light(res.pos, res.normal, dir, scene, mat);
+			res.color = calculate_light(res.pos, res.normal, dir, scene, mat,
+					depth);
 		}
 	} else {
 		res.valid = false;
@@ -74,7 +75,7 @@ Object::intersect Sphere::intersect_ray(Scene &scene, Vertex3 origin,
 }
 
 Object::intersect Endless_plane::intersect_ray(Scene &scene, Vertex3 origin,
-		Vector3 dir, bool shadow)
+		Vector3 dir, bool shadow, int depth)
 {
 	intersect res;
 
@@ -104,13 +105,13 @@ Object::intersect Endless_plane::intersect_ray(Scene &scene, Vertex3 origin,
 			if (!shadow) {
 				if (!texture) {
 					res.color = calculate_light(res.pos, res.normal, dir,
-							scene, mat);
+							scene, mat, depth);
 				} else {
 					res.color = calculate_light(res.pos, res.normal, dir,
 							scene,
 							Material(texture->get_color(textures[0] * u +
 							textures[1] * v + textures[2] * (1-u-v)), mat.Ks,
-							mat.Ns, mat.d, mat.alpha));
+							mat.Ns, mat.d, mat.alpha), depth);
 				}
 			}
 		} else {

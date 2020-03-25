@@ -14,7 +14,7 @@
 class Triangle: public Object {
 public:
 	virtual intersect intersect_ray(Scene &scene, Vertex3 origin, Vector3 dir,
-			bool shadow);
+			bool shadow, int depth);
 
 	Triangle(
 			Vertex3 v1 = Vertex3(),
@@ -50,7 +50,7 @@ public:
 class Sphere: public Object {
 public:
 	virtual intersect intersect_ray(Scene &scene, Vertex3 origin, Vector3 dir,
-			bool shadow);
+			bool shadow, int depth);
 
 	Vertex3 pos;
 	double R;
@@ -66,7 +66,7 @@ public:
 class Endless_plane: public Triangle {
 public:
 	virtual intersect intersect_ray(Scene &scene, Vertex3 origin, Vector3 dir,
-			bool shadow);
+			bool shadow, int depth);
 
 	Endless_plane(
 			Vertex3 v1 = Vertex3(),
