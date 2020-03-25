@@ -204,10 +204,10 @@ int main(int argc, const char **argv)
 		scene.add(&left);
 		scene.add(&right);
 		scene.add(&sp3);
-		scene.add(Light(Vertex3(20, 80, 120), 100));
-		scene.add(Light(Vertex3(20, 80, 80), 100));
-		scene.add(Light(Vertex3(-20, 80, 120), 100));
-		scene.add(Light(Vertex3(-20, 80, 80), 100));
+		scene.add(Light(Vertex3(20, 80, 120), 10));
+		scene.add(Light(Vertex3(20, 80, 80), 10));
+		scene.add(Light(Vertex3(-20, 80, 120), 10));
+		scene.add(Light(Vertex3(-20, 80, 80), 10));
 
 		cam.position = Vertex3(0, 0, -80);
 		cam.phi = 0;
@@ -253,13 +253,19 @@ int main(int argc, const char **argv)
 				}
 			} else {
 				color = Vector3();
-				for (int k = 0; k < 100; ++k) {
+				for (int k = 0; k < 400; ++k) {
 					Object::intersect info = scene.intersect_ray(cam.position,
-							dir.normalize(), false, 5, true);
+							dir.normalize(), false, 10, true);
 					if (info.valid) {
 						color += info.color;
 					}
 				}
+			}
+
+			double coeff = max(max(color.X(), color.Y()), color.Z());
+
+			if (coeff > 1.0) {
+				color = color * (1.0 / coeff);
 			}
 
 			#pragma omp critical

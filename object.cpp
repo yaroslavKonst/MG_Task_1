@@ -33,6 +33,7 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 				path_dir.X() + distr(random_engine),
 				path_dir.Y() + distr(random_engine),
 				path_dir.Z() + distr(random_engine)).normalize();
+
 		intersect info = scene.intersect_ray(start, path_dir, false, depth - 1,
 				path);
 		if (info.valid) {
@@ -55,10 +56,7 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 	} else {
 		light_sum = light_sum * (1 - (mat.Ns / 1000));
 	}
-	light_sum = Vector3(
-			min(light_sum.X(), 1.0),
-			min(light_sum.Y(), 1.0),
-			min(light_sum.Z(), 1.0));
+
 	return light_sum;
 }
 
