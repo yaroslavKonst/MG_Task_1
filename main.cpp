@@ -107,13 +107,16 @@ int main(int argc, const char **argv)
 
 // SCENE 1
 	Endless_plane back;
-	back.vertices[0] = Vertex3(0, 0, -100);
-	back.vertices[1] = Vertex3(-100, 100, -100);
-	back.vertices[2] = Vertex3(100, 100, -100);
+//	back.vertices[0] = Vertex3(0, 0, -100);
+//	back.vertices[1] = Vertex3(-100, 100, -100);
+//	back.vertices[2] = Vertex3(100, 100, -100);
+	back.vertices[0] = Vertex3(0, 0, -600);
+	back.vertices[1] = Vertex3(-100, 100, -600);
+	back.vertices[2] = Vertex3(100, 100, -600);
 	back.normals[0] = Vector3(0, 0, 1);
 	back.normals[1] = Vector3(0, 0, 1);
 	back.normals[2] = Vector3(0, 0, 1);
-	back.mat.Kd = Vector3(0, 0, 0);
+	back.mat.Kd = Vector3(1, 1, 1);
 	back.mat.Ks = Vector3();
 	back.mat.Ns = 0;
 
@@ -204,10 +207,10 @@ int main(int argc, const char **argv)
 		scene.add(&left);
 		scene.add(&right);
 		scene.add(&sp3);
-		scene.add(Light(Vertex3(20, 80, 120), 10));
-		scene.add(Light(Vertex3(20, 80, 80), 10));
-		scene.add(Light(Vertex3(-20, 80, 120), 10));
-		scene.add(Light(Vertex3(-20, 80, 80), 10));
+		scene.add(Light(Vertex3(20, 95, 120), 30));
+		scene.add(Light(Vertex3(20, 95, 80), 30));
+		scene.add(Light(Vertex3(-20, 95, 120), 30));
+		scene.add(Light(Vertex3(-20, 95, 80), 30));
 
 		cam.position = Vertex3(0, 0, -80);
 		cam.phi = 0;
@@ -220,6 +223,17 @@ int main(int argc, const char **argv)
 		cam.phi = M_PI / 3;
 		cam.psi = 0;
 		cam.fov = M_PI / 2;
+	} else if (sceneId == 3) {
+		scene.add(&front);
+		scene.add(&back);
+		scene.add(new Sphere(Vertex3(100, 100, 0), 50, green));
+		front.mat.Ns = 1000;
+//		scene.add(Light(Vertex3(0, 100, -400), 40));
+		scene.add(Light(Vertex3(0, 100, -400), 40000));
+		cam.position = Vertex3(0, 0, -400);
+		cam.phi = 0;
+		cam.psi = 0;
+		cam.fov = M_PI / 2;
 	}
 
 	uint32_t width = 512;
@@ -228,6 +242,11 @@ int main(int argc, const char **argv)
 	std::cout << "Rendering.\n";
 
 	std::vector<uint32_t> image(width * height);
+
+	bool path_tr = false;
+	if (sceneId == 1 || sceneId == 6) {
+		path_tr = true;
+	}
 
 	#pragma omp parallel for shared(image, width, height) schedule(dynamic)
 	for (uint32_t i = 0; i < width; ++i) {
@@ -242,7 +261,8 @@ int main(int argc, const char **argv)
 
 			Vector3 color;
 
-			if (sceneId != 1) {
+			if (!path_tr) {
+				// ray tracing
 				Object::intersect info = scene.intersect_ray(cam.position,
 						dir.normalize(), false, 100, false);
 
@@ -252,10 +272,11 @@ int main(int argc, const char **argv)
 					color = Vector3(); // RED | GREEN | BLUE;
 				}
 			} else {
+				// path tracing
 				color = Vector3();
-				for (int k = 0; k < 400; ++k) {
+				for (int k = 0; k < 800; ++k) {
 					Object::intersect info = scene.intersect_ray(cam.position,
-							dir.normalize(), false, 10, true);
+							dir.normalize(), false, 4, true);
 					if (info.valid) {
 						color += info.color;
 					}
@@ -275,21 +296,36 @@ int main(int argc, const char **argv)
 		}
 	}
 
-/*	// Filtering
-	std::cout << "Filtering.\n";
-	std::vector<uint32_t> image_fin(width * height);
+	if (path_tr && 0) {
+		for (int iter = 0; iter < 30; ++iter) {
+			std::vector<uint32_t> image_fin(width * height);
+			std::cout << "Filtering: " << iter << std::endl;
+			for (uint32_t i = 1; i < width - 1; ++i) {
+				for (uint32_t j = 1; j < height - 1; ++j) {
+					Vector3 center = from_RGB(image[i*height + j]);
+					Vector3 ng[4];
+					ng[0] = from_RGB(image[i*height + j + 1]);
+					ng[1] = from_RGB(image[i*height + j - 1]);
+					ng[2] = from_RGB(image[(i + 1)*height + j]);
+					ng[3] = from_RGB(image[(i - 1)*height + j]);
 
-	for (uint32_t i = 1; i < width - 1; ++i) {
-		for (uint32_t j = 1; j < height - 1; ++j) {
-			image_fin[i*height + j] = to_RGB(
-					(from_RGB(image[i*height + j]) +
-					from_RGB(image[i*height + j + 1]) +
-					from_RGB(image[i*height + j - 1]) +
-					from_RGB(image[(i + 1)*height + j]) +
-					from_RGB(image[(i - 1)*height + j])) * (1.0 / 5.0));
+					double sum = 1;
+					Vector3 v_sum = center;
+
+					for (int k = 0; k < 4; ++k) {
+						if ((ng[k] - center).length() < 0.05 || iter <= 3) {
+							sum += 1.0;
+							v_sum += ng[k];
+						}
+					}
+
+					image_fin[i*height + j] = to_RGB(v_sum * (1 / sum));
+				}
+			}
+			image = image_fin;
 		}
 	}
-*/
+
 	std::cout << "Saving image to " << outFilePath << "." << std::endl;
 
 	SaveBMP(outFilePath.c_str(), image.data(), width, height);
