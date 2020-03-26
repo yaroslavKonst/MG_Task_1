@@ -7,6 +7,7 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 {
 	Vector3 light_sum;
 	Vertex3 start = pos + normal * 0.001;
+
 	for (unsigned int l = 0; l < scene.lights.size(); ++l) {
 		Vector3 lt = scene.lights[l].pos - start;
 		if (normal.dot(lt) > 0 && mat.Ns < 1000) {
@@ -26,7 +27,7 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 		}
 	}
 
-	if (path && depth > 0) {
+	if (path && depth > 0 && mat.Ns < 1000) {
 		std::normal_distribution<double> distr;
 		Vector3 path_dir = mirror(dir * (-1), normal).normalize() * 0.5;
 		path_dir = Vector3(
