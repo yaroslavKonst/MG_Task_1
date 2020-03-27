@@ -71,11 +71,15 @@ int main(int argc, const char **argv)
 	Material green(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
 			300, 1, 40);
 
+	Material transparent(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
+			300, 0, 40, 1.2);
+
 
 	std::cout << "Loading models.\n";
 
 // SCENE 0
 	Sphere sp_bl(Vertex3(0, -20, 300), 50, blue);
+	Sphere sp_tr(Vertex3(0, 50, 400), 40, transparent);
 	Sphere sp_bl3(Vertex3(120, -20, 300), 50, blue);
 
 	Sphere sp_bl1(Vertex3(-80, -40, 350), 20, green1);
@@ -100,6 +104,7 @@ int main(int argc, const char **argv)
 	plain.mat.Ks = Vector3();
 	plain.mat.Ns = 100;
 	plain.mat.alpha = 1400;
+	plain.mat.d = 1;
 	plain.texture = new TexChBoard;
 	plain.textures[0] = Vector3(-500, 500, 0);
 	plain.textures[1] = Vector3(500, 500, 0);
@@ -180,6 +185,7 @@ int main(int argc, const char **argv)
 // CAMERA
 	Camera cam;
 
+// Scene selection
 	if (sceneId == 0) {
 		scene.add(&sp_bl);
 		scene.add(&sp_bl1);
@@ -188,6 +194,7 @@ int main(int argc, const char **argv)
 		scene.add(&sp);
 		scene.add(&sp1);
 		scene.add(&sp_gr);
+		scene.add(&sp_tr);
 		scene.add(&plain);
 		scene.add(Light(Vertex3(-500, 100, 0), 500000));
 		scene.add(Light(Vertex3(500, 100, 200), 200000));
@@ -236,8 +243,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 512;
-	uint32_t height = 512;
+	uint32_t width = 20000;
+	uint32_t height = 20000;
 
 	std::cout << "Rendering.\n";
 
@@ -248,7 +255,7 @@ int main(int argc, const char **argv)
 		path_tr = true;
 	}
 
-	#pragma omp parallel for shared(image, width, height) schedule(dynamic)
+	#pragma omp parallel for shared(scene, image, width, height) schedule(dynamic)
 	for (uint32_t i = 0; i < width; ++i) {
 		if (i % 10 == 0) {
 			#pragma omp critical
@@ -263,7 +270,8 @@ int main(int argc, const char **argv)
 
 			if (!path_tr) {
 				// ray tracing
-				Object::intersect info = scene.intersect_ray(cam.position,
+				RefrInfo refr;
+				Object::intersect info = scene.intersect_ray(refr, cam.position,
 						dir.normalize(), false, 100, false);
 
 				if (info.valid) {
@@ -274,14 +282,18 @@ int main(int argc, const char **argv)
 			} else {
 				// path tracing
 				color = Vector3();
+				RefrInfo refr;
+				
 				for (int k = 0; k < 800; ++k) {
-					Object::intersect info = scene.intersect_ray(cam.position,
-							dir.normalize(), false, 4, true);
+					Object::intersect info = scene.intersect_ray(refr,
+							cam.position, dir.normalize(), false, 4, true);
 					if (info.valid) {
 						color += info.color;
 					}
+					refr.reset();
 				}
 			}
+
 
 			double coeff = max(max(color.X(), color.Y()), color.Z());
 

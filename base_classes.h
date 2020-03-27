@@ -306,4 +306,74 @@ private:
 	T cont[3][3];
 };
 
+template<class T>
+class Stack {
+public:
+	Stack()
+	{
+		head = 0;
+	}
+
+	~Stack()
+	{
+		clear();
+	}
+
+	bool empty() const
+	{
+		return !head;
+	}
+
+	void clear()
+	{
+		while (head) {
+			elem *tmp = head;
+			head = head->next;
+			delete tmp;
+		}
+	}
+
+	void push(const T &e)
+	{
+		elem *tmp = head;
+		head = new elem(e);
+		head->next = tmp;
+	}
+
+	T pop()
+	{
+		elem *tmp = head;
+		head = head->next;
+		T i = tmp->item;
+		delete tmp;
+		return i;
+	}
+
+	T get(int idx = 0) const
+	{
+		elem *tmp = head;
+		while (idx > 0) {
+			tmp = tmp->next;
+			--idx;
+		}
+		return tmp->item;
+	}
+
+private:
+	struct elem {
+		T item;
+		elem *next;
+
+		elem(const T &e): item(e)
+		{ }	
+	};
+	elem *head;
+
+	Stack(const Stack &s)
+	{ }
+
+	void operator=(const Stack &s)
+	{ }
+};
+
 #endif

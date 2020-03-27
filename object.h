@@ -10,6 +10,7 @@
 #include "vector_functions.h"
 #include "light.h"
 #include "texture.h"
+#include "refr_info.h"
 
 class Scene;
 
@@ -35,11 +36,11 @@ public:
 	virtual ~Object()
 	{ }
 
-	virtual intersect intersect_ray(Scene &scene, Vertex3 origin,
-			Vector3 dir, bool shadow, int depth, bool path) = 0;
+	virtual intersect intersect_ray(Scene &scene, RefrInfo &refr,
+			Vertex3 origin, Vector3 dir, bool shadow, int depth, bool path) = 0;
 
 	Vector3 calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
-			Scene &scene, Material mat, int depth, bool path);
+			Scene &scene, RefrInfo &refr, Material mat, int depth, bool path);
 
 private:
 	static std::mt19937 random_engine;
@@ -50,8 +51,8 @@ public:
 	std::vector<Object*> objects;
 	std::vector<Light> lights;
 
-	Object::intersect intersect_ray(Vertex3 pos, Vector3 dir, bool shadow,
-			int depth, bool path);
+	Object::intersect intersect_ray(RefrInfo &refr, Vertex3 pos, Vector3 dir,
+			bool shadow, int depth, bool path);
 
 	void add(Object *obj)
 	{

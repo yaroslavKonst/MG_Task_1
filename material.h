@@ -13,7 +13,7 @@ struct Material {
 	double alpha;
 
 	Material(Vector3 kd = Vector3(), Vector3 ks = Vector3(), double ns = 0,
-			double D = 0, double a = 20, double n = 1)
+			double D = 1, double a = 20, double n = 1)
 	{
 		Kd = kd;
 		Ks = ks;

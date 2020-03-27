@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include "base_classes.h"
+#include "base_functions.h"
 #include "material.h"
 
 inline Vector3 mirror(Vector3 obj, Vector3 base)
@@ -19,17 +20,29 @@ inline Vector3 get_Phong_light(Material mat, Vector3 normal,
 	Vector3 dir, Vector3 light, double intensity)
 {
 	Vector3 light_n = light.normalize();
-	Vector3 sum =
+	return Vector3(
 			(mat.Kd * light_n.dot(normal) * intensity) +
-			(mat.Ks * pow(mirror(light_n, normal).dot((dir*(-1)).normalize()),
-			mat.alpha) * intensity);
-	return sum;
+			(mat.Ks * pow((light_n + (dir * -1)).normalize().dot(normal),
+			mat.alpha) * intensity));
 }
 
 bool triangle_ray_intersection(Vertex3 *vertices, Vertex3 origin, Vector3 dir,
 		double &t, double &u, double &v);
-/*
-inline Snell_refr(Vector3 obj, Vector3 base)
+
+inline Vector3 Snell_refr(Vector3 dir, Vector3 normal, double n1, double n2,
+		bool &refr_out)
 {
-*/
+	double ang_cos = (dir * -1).normalize().dot(normal);
+	Vector3 delta = ((normal * ang_cos) - (dir * -1)) * (n1 / n2);
+	ang_cos = sqrt(1 - pow(ang_cos, 2)) * n1 / n2;
+	ang_cos = sqrt(1 - pow(ang_cos, 2));
+	Vector3 res = ((normal * -ang_cos) + delta).normalize();
+	if (res.dot(normal) <= 0) {
+		refr_out = true;
+		return res;
+	} else {
+		return mirror(dir * -1, normal).normalize();
+	}
+}
+
 #endif
