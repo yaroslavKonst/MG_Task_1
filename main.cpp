@@ -285,7 +285,7 @@ int main(int argc, const char **argv)
 				// path tracing
 				color = Vector3();
 				RefrInfo refr;
-				int rays = 400;
+				int rays = 800;
 				for (int k = 0; k < rays; ++k) {
 					Object::intersect info = scene.intersect_ray(refr,
 							cam.position, dir.normalize(), false, 5, true);
@@ -311,7 +311,7 @@ int main(int argc, const char **argv)
 		}
 	}
 
-	if (path_tr && 0) {
+	if (path_tr) {
 		for (int iter = 0; iter < 30; ++iter) {
 			std::vector<uint32_t> image_fin(width * height);
 			std::cout << "Filtering: " << iter << std::endl;
