@@ -245,8 +245,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 20000;
-	uint32_t height = 20000;
+	uint32_t width = 1000;
+	uint32_t height = 1000;
 
 	std::cout << "Rendering.\n";
 
@@ -285,7 +285,7 @@ int main(int argc, const char **argv)
 				// path tracing
 				color = Vector3();
 				RefrInfo refr;
-				int rays = 800;
+				int rays = 400;
 				for (int k = 0; k < rays; ++k) {
 					Object::intersect info = scene.intersect_ray(refr,
 							cam.position, dir.normalize(), false, 5, true);
