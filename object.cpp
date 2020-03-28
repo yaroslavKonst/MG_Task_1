@@ -63,27 +63,30 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 
 		return light_sum;
 	} else {
+		if (depth == 0) {
+			return Vector3();
+		}
 		Vertex3 start;
 		double n1, n2;
 		Vector3 refr_dir;
 		if (dir.dot(normal) > 0) {
-			n1 = refr.st.get(0).n;
-			n2 = refr.st.get(1).n;
+			n1 = mat.N;//refr.st.get(0).n;
+			n2 = 1;//refr.st.get(1).n;
 			bool refr_s;
 			refr_dir = Snell_refr(dir.normalize(), normal * -1, n1, n2, refr_s);
 			if (refr_s) {
-				refr.st.pop();
+				//refr.st.pop();
 				start = pos + normal * 0.001;
 			} else {
 				start = pos + normal * -0.001;
 			}
 		} else {
-			n1 = refr.st.get(0).n;
+			n1 = 1;//refr.st.get(0).n;
 			n2 = mat.N;
 			bool refr_s;
 			refr_dir = Snell_refr(dir.normalize(), normal, n1, n2, refr_s);
 			if (refr_s) {
-				refr.st.push(RefrInfo::info(start, mat.N));
+				//refr.st.push(RefrInfo::info(start, mat.N));
 				start = pos + normal * -0.001;
 			} else {
 				start = pos + normal * 0.001;
@@ -93,7 +96,7 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 		info.valid = false;
 		info.t = 0;
 
-		info = scene.intersect_ray(refr, start, refr_dir, false, depth - 1,
+		info = scene.intersect_ray(refr, start, refr_dir, false, depth,
 				path);
 
 		if (info.valid) {

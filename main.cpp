@@ -72,7 +72,7 @@ int main(int argc, const char **argv)
 			300, 1, 40);
 
 	Material transparent(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
-			300, 0, 40, 1.2);
+			300, 0, 40, 1.5);
 
 
 	std::cout << "Loading models.\n";
@@ -112,16 +112,16 @@ int main(int argc, const char **argv)
 
 // SCENE 1
 	Endless_plane back;
-//	back.vertices[0] = Vertex3(0, 0, -100);
-//	back.vertices[1] = Vertex3(-100, 100, -100);
-//	back.vertices[2] = Vertex3(100, 100, -100);
-	back.vertices[0] = Vertex3(0, 0, -600);
-	back.vertices[1] = Vertex3(-100, 100, -600);
-	back.vertices[2] = Vertex3(100, 100, -600);
+	back.vertices[0] = Vertex3(0, 0, -100);
+	back.vertices[1] = Vertex3(-100, 100, -100);
+	back.vertices[2] = Vertex3(100, 100, -100);
+//	back.vertices[0] = Vertex3(0, 0, -600);
+//	back.vertices[1] = Vertex3(-100, 100, -600);
+//	back.vertices[2] = Vertex3(100, 100, -600);
 	back.normals[0] = Vector3(0, 0, 1);
 	back.normals[1] = Vector3(0, 0, 1);
 	back.normals[2] = Vector3(0, 0, 1);
-	back.mat.Kd = Vector3(1, 1, 1);
+	back.mat.Kd = Vector3(0.1, 0.1, 0.1);
 	back.mat.Ks = Vector3();
 	back.mat.Ns = 0;
 
@@ -176,11 +176,12 @@ int main(int argc, const char **argv)
 	front.normals[0] = Vector3(0, 0, -1);
 	front.normals[1] = Vector3(0, 0, -1);
 	front.normals[2] = Vector3(0, 0, -1);
-	front.mat.Kd = Vector3(0.7, 0.7, 0.7);
+	front.mat.Kd = Vector3(0, 0, 0.7);
 	front.mat.Ks = Vector3();
 	front.mat.Ns = 0;
 
 	Sphere sp3(Vertex3(60, -60, 260), 40, mirror);
+	Sphere sp4(Vertex3(-60, -60, 160), 40, transparent);
 
 // CAMERA
 	Camera cam;
@@ -214,10 +215,11 @@ int main(int argc, const char **argv)
 		scene.add(&left);
 		scene.add(&right);
 		scene.add(&sp3);
-		scene.add(Light(Vertex3(20, 95, 120), 30));
-		scene.add(Light(Vertex3(20, 95, 80), 30));
-		scene.add(Light(Vertex3(-20, 95, 120), 30));
-		scene.add(Light(Vertex3(-20, 95, 80), 30));
+		scene.add(&sp4);
+		scene.add(Light(Vertex3(20, 95, 220), 2500));
+		scene.add(Light(Vertex3(20, 95, 200), 2500));
+		scene.add(Light(Vertex3(-20, 95, 220), 2500));
+		scene.add(Light(Vertex3(-20, 95, 200), 2500));
 
 		cam.position = Vertex3(0, 0, -80);
 		cam.phi = 0;
@@ -283,15 +285,16 @@ int main(int argc, const char **argv)
 				// path tracing
 				color = Vector3();
 				RefrInfo refr;
-				
-				for (int k = 0; k < 800; ++k) {
+				int rays = 800;
+				for (int k = 0; k < rays; ++k) {
 					Object::intersect info = scene.intersect_ray(refr,
-							cam.position, dir.normalize(), false, 4, true);
+							cam.position, dir.normalize(), false, 5, true);
 					if (info.valid) {
 						color += info.color;
 					}
 					refr.reset();
 				}
+				color = color * (1.0 / (double)rays);
 			}
 
 

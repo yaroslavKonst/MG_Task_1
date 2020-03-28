@@ -98,7 +98,7 @@ Mesh::Mesh(std::string file, double x, double y, double z, double phi,
 	tree_root->min_y = min_y;
 	tree_root->max_z = max_z;
 	tree_root->min_z = min_z;
-	tree_root->build(polygons);
+	tree_root->build(polygons, 10);
 }
 
 Mesh::Mesh(const Mesh &mesh)
@@ -127,9 +127,9 @@ Mesh::Mesh(const Mesh &mesh)
 	tree_root = new tree_elem(*mesh.tree_root);
 }
 
-void Mesh::tree_elem::build(const std::vector<polygon> &pol)
+void Mesh::tree_elem::build(const std::vector<polygon> &pol, int depth)
 {
-	if (polygons.size() > 1000) {
+	if (polygons.size() > 50 && depth > 0) {
 		lv[0] = new tree_elem;
 		lv[0]->max_x = max_x;
 		lv[0]->min_x = (max_x + min_x) / 2;
@@ -207,7 +207,7 @@ void Mesh::tree_elem::build(const std::vector<polygon> &pol)
 		}
 		for (int i = 0; i < 8; ++i) {
 			if (lv[i]->polygons.size() > 0) {
-				lv[i]->build(pol);
+				lv[i]->build(pol, depth - 1);
 			} else {
 				delete lv[i];
 				lv[i] = 0;
@@ -245,13 +245,13 @@ list<Mesh::tree_elem*> Mesh::tree_elem::check_ray(Vertex3 origin, Vector3 dir)
 		bool f = true;
 		for (int i = 0; i < 8; ++i) {
 			if (lv[i]) {
-				lst += lv[i]->check_ray(origin, dir);
-			} else if (f) {
 				f = false;
-				lst.push_back(this);
+				lst += lv[i]->check_ray(origin, dir);
 			}
 		}
-
+		if (f) {
+			lst.push_back(this);
+		}
 	}
 	return lst;
 }

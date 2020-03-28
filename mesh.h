@@ -72,18 +72,26 @@ private:
 		bool in(double max_x, double min_x, double max_y, double min_y,
 				double max_z, double min_z) const
 		{
-			for (int i = 0; i < 3; ++i) {
-				double x = vertices[i].X();
-				double y = vertices[i].Y();
-				double z = vertices[i].Z();
-				if (min_x <= x && x <= max_x &&
-						min_y <= y && y <= max_y &&
-						min_z <= z && z <= max_z
-				) {
-					return true;
-				}
+			double m_x, m_y, m_z, M_x, M_y, M_z;
+			m_x = M_x = vertices[0].X();
+			m_y = M_y = vertices[0].Y();
+			m_z = M_z = vertices[0].Z();
+			for (int i = 1; i < 3; ++i) {
+				m_x = min(m_x, vertices[i].X());
+				M_x = max(M_x, vertices[i].X());
+				m_y = min(m_y, vertices[i].Y());
+				M_y = max(M_y, vertices[i].Y());
+				m_z = min(m_z, vertices[i].Z());
+				M_z = max(M_z, vertices[i].Z());
 			}
-			return false;
+			if (min_x <= M_x && max_x >= m_x &&
+					min_y <= M_y && max_y >= m_y &&
+					min_z <= M_z && max_z >= m_z
+			) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	};
 
@@ -124,7 +132,7 @@ private:
 			min_z = te.min_z;
 		}
 
-		void build(const std::vector<polygon> &pol);
+		void build(const std::vector<polygon> &pol, int depth);
 
 		~tree_elem()
 		{
