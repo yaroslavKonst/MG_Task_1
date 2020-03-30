@@ -67,27 +67,31 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 			return Vector3();
 		}
 		Vertex3 start;
-		double n1, n2;
+		Vertex3 start_refl;
+		double n1, n2, refl_coeff;
 		Vector3 refr_dir;
+		bool refr_s;
 		if (dir.dot(normal) > 0) {
 			n1 = mat.N;//refr.st.get(0).n;
 			n2 = 1;//refr.st.get(1).n;
-			bool refr_s;
 			refr_dir = Snell_refr(dir.normalize(), normal * -1, n1, n2, refr_s);
 			if (refr_s) {
 				//refr.st.pop();
 				start = pos + normal * 0.001;
+				start_refl = pos + normal * -0.001;
+				refl_coeff = Fresnel_coeff(n1, n2, (dir).dot(normal));
 			} else {
 				start = pos + normal * -0.001;
 			}
 		} else {
 			n1 = 1;//refr.st.get(0).n;
 			n2 = mat.N;
-			bool refr_s;
 			refr_dir = Snell_refr(dir.normalize(), normal, n1, n2, refr_s);
 			if (refr_s) {
 				//refr.st.push(RefrInfo::info(start, mat.N));
 				start = pos + normal * -0.001;
+				start_refl = pos + normal * 0.001;
+				refl_coeff = Fresnel_coeff(n1, n2, (dir*-1).dot(normal));
 			} else {
 				start = pos + normal * 0.001;
 			}
@@ -98,6 +102,24 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 
 		info = scene.intersect_ray(refr, start, refr_dir, false, depth,
 				path);
+
+		intersect info_refl;
+		info_refl.valid = false;
+		info_refl.t = 0;
+
+		if (refr_s) {
+			info_refl = scene.intersect_ray(refr, start_refl, mirror(dir * -1,
+					normal).normalize(), false, depth - 1, path);
+			Vector3 light;
+			if (info.valid) {
+				light += info.color * (1 - refl_coeff);
+			}
+			if (info_refl.valid) {
+				light += info_refl.color * refl_coeff;
+			}
+			info.color = light;
+			info.valid = true;
+		}
 
 		if (info.valid) {
 			return info.color;

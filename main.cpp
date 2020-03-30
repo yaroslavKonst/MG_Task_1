@@ -274,7 +274,7 @@ int main(int argc, const char **argv)
 				// ray tracing
 				RefrInfo refr;
 				Object::intersect info = scene.intersect_ray(refr, cam.position,
-						dir.normalize(), false, 100, false);
+						dir.normalize(), false, 10, false);
 
 				if (info.valid) {
 					color = info.color;

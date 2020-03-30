@@ -45,4 +45,14 @@ inline Vector3 Snell_refr(Vector3 dir, Vector3 normal, double n1, double n2,
 	}
 }
 
+inline double Fresnel_coeff(double n1, double n2, double ang_cos)
+{
+	double ang_sin = sqrt(1 - pow(ang_cos, 2));
+	double r1 = pow(module((n1*ang_cos - n2*sqrt(1 - pow(n1/n2*ang_sin, 2))) /
+			(n1*ang_cos + n2*sqrt(1 - pow(n1/n2*ang_sin, 2)))), 2);
+	double r2 = pow(module((n1*sqrt(1 - pow(n1/n2*ang_sin, 2)) - n2*ang_cos) /
+			(n1*sqrt(1 - pow(n1/n2*ang_sin, 2)) + n2*ang_cos)), 2);
+	return (r1 + r2) / 2;
+}
+
 #endif
