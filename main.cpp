@@ -243,6 +243,32 @@ int main(int argc, const char **argv)
 		cam.phi = 0;
 		cam.psi = 0;
 		cam.fov = M_PI / 2;
+	} else if (sceneId == 4) {
+		scene.add(new Endless_plane(
+				Vertex3(500, 0, 500),
+				Vertex3(-500, 0, 500),
+				Vertex3(0, 0, 0),
+				Vector3(0, 1, 0),
+				Vector3(0, 1, 0),
+				Vector3(0, 1, 0),
+				Material(Vector3(0, 0.9, 0))));
+		scene.add(new Mesh("objects/planeAssembly.obj", 0, 140, 0,
+				5.0 * M_PI / 4.0, 0, 0));
+		scene.add(Light(Vertex3(0, 700, 0), 40000));
+		scene.add(Light(Vertex3(100, 700, 100), 40000));
+		scene.add(Light(Vertex3(100, 700, -100), 40000));
+		scene.add(Light(Vertex3(-100, 700, 100), 40000));
+		scene.add(Light(Vertex3(-100, 700, -100), 40000));
+		scene.add(Light(Vertex3(50, 700, 50), 40000));
+		scene.add(Light(Vertex3(50, 700, -50), 40000));
+		scene.add(Light(Vertex3(-50, 700, 50), 40000));
+		scene.add(Light(Vertex3(-50, 700, -50), 40000));
+
+
+		cam.position = Vertex3(0, 540, -400);
+		cam.phi = 0;
+		cam.psi = M_PI / 4;
+		cam.fov = M_PI / 2;
 	}
 
 	uint32_t width = 1000;
@@ -272,8 +298,7 @@ int main(int argc, const char **argv)
 
 			if (!path_tr) {
 				// ray tracing
-				RefrInfo refr;
-				Object::intersect info = scene.intersect_ray(refr, cam.position,
+				Object::intersect info = scene.intersect_ray(cam.position,
 						dir.normalize(), false, 10, false);
 
 				if (info.valid) {
@@ -284,17 +309,12 @@ int main(int argc, const char **argv)
 			} else {
 				// path tracing
 				color = Vector3();
-				RefrInfo refr;
-				int rays = 800;
-				for (int k = 0; k < rays; ++k) {
-					Object::intersect info = scene.intersect_ray(refr,
-							cam.position, dir.normalize(), false, 5, true);
-					if (info.valid) {
-						color += info.color;
-					}
-					refr.reset();
+
+				Object::intersect info = scene.trace_path(cam.position,
+						dir.normalize(), 5, 800);
+				if (info.valid) {
+					color = info.color;
 				}
-				color = color * (1.0 / (double)rays);
 			}
 
 

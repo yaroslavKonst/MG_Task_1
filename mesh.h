@@ -17,8 +17,8 @@ public:
 	Mesh(const Mesh& mesh);
 	~Mesh();
 
-	virtual intersect intersect_ray(Scene &scene, RefrInfo &refr,
-			Vertex3 origin, Vector3 dir, bool shadow, int depth, bool path);
+	virtual intersect intersect_ray(Scene &scene, Vertex3 origin, Vector3 dir,
+			bool shadow, int depth, bool path);
 
 private:
 	double X;
