@@ -30,12 +30,21 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 		}
 
 		if (path && depth > 0 && mat.Ns < 1000) {
-			std::normal_distribution<double> distr;
-			Vector3 path_dir = mirror(dir * (-1), normal).normalize() * 0.5;
-			path_dir = Vector3(
-					path_dir.X() + distr(random_engine),
-					path_dir.Y() + distr(random_engine),
-					path_dir.Z() + distr(random_engine)).normalize();
+			std::uniform_real_distribution<double> distr(-M_PI / 2, M_PI / 2);
+
+			Vector3 e1(1, 0, 0);
+			if (module(e1.dot(normal)) > 0.9) {
+				e1 = Vector3(0, 1, 0);
+			}
+
+			e1 = (e1 - (normal * e1.dot(normal))).normalize();
+			Vector3 e2 = (e1*normal).normalize();
+
+			double ang1 = distr(random_engine);
+			double ang2 = distr(random_engine);
+
+			Vector3 path_dir = (normal * cos(ang1) * cos(ang2) +
+					e1 * sin(ang1) + e2 * sin(ang2)).normalize();
 
 			intersect info = scene.intersect_ray(start, path_dir, false,
 					depth - 1, path);

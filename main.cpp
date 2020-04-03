@@ -274,6 +274,12 @@ int main(int argc, const char **argv)
 	uint32_t width = 512;
 	uint32_t height = 512;
 
+	if (sceneId == 0) {
+		width = 1024;
+		height = 1024;
+
+	}
+
 	std::cout << "Rendering.\n";
 
 	std::vector<uint32_t> image(width * height);

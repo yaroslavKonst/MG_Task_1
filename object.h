@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <random>
+#include <math.h>
 #include "base_classes.h"
 #include "base_functions.h"
 #include "material.h"
