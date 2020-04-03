@@ -271,8 +271,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 512;
-	uint32_t height = 512;
+	uint32_t width = 1024;
+	uint32_t height = 1024;
 
 	if (sceneId == 0) {
 		width = 1024;
@@ -317,7 +317,7 @@ int main(int argc, const char **argv)
 				color = Vector3();
 
 				Object::intersect info = scene.trace_path(cam.position,
-						dir.normalize(), 3, 100);
+						dir.normalize(), 3, 800);
 				if (info.valid) {
 					color = info.color;
 				}

@@ -48,10 +48,13 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 
 			intersect info = scene.intersect_ray(start, path_dir, false,
 					depth - 1, path);
+
+			double ang_cos = path_dir.dot(normal);
+
 			if (info.valid) {
 				light_sum += Vector3(mat.Kd.X() * info.color.X(),
 						mat.Kd.Y() * info.color.Y(),
-						mat.Kd.Z() * info.color.Z());
+						mat.Kd.Z() * info.color.Z()) * ang_cos;
 			}
 		}
 
