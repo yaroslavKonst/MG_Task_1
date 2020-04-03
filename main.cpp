@@ -112,9 +112,9 @@ int main(int argc, const char **argv)
 
 // SCENE 1
 	Endless_plane back;
-	back.vertices[0] = Vertex3(0, 0, -100);
-	back.vertices[1] = Vertex3(-100, 100, -100);
-	back.vertices[2] = Vertex3(100, 100, -100);
+	back.vertices[0] = Vertex3(0, 0, -90);
+	back.vertices[1] = Vertex3(-100, 100, -90);
+	back.vertices[2] = Vertex3(100, 100, -90);
 //	back.vertices[0] = Vertex3(0, 0, -600);
 //	back.vertices[1] = Vertex3(-100, 100, -600);
 //	back.vertices[2] = Vertex3(100, 100, -600);
@@ -271,8 +271,8 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 1000;
-	uint32_t height = 1000;
+	uint32_t width = 512;
+	uint32_t height = 512;
 
 	std::cout << "Rendering.\n";
 
@@ -299,7 +299,7 @@ int main(int argc, const char **argv)
 			if (!path_tr) {
 				// ray tracing
 				Object::intersect info = scene.intersect_ray(cam.position,
-						dir.normalize(), false, 10, false);
+						dir.normalize(), false, 5, false);
 
 				if (info.valid) {
 					color = info.color;
@@ -311,7 +311,7 @@ int main(int argc, const char **argv)
 				color = Vector3();
 
 				Object::intersect info = scene.trace_path(cam.position,
-						dir.normalize(), 5, 800);
+						dir.normalize(), 3, 100);
 				if (info.valid) {
 					color = info.color;
 				}
@@ -332,7 +332,7 @@ int main(int argc, const char **argv)
 	}
 
 	if (path_tr) {
-		for (int iter = 0; iter < 30; ++iter) {
+		for (int iter = 0; iter < 10; ++iter) {
 			std::vector<uint32_t> image_fin(width * height);
 			std::cout << "Filtering: " << iter << std::endl;
 			for (uint32_t i = 1; i < width - 1; ++i) {
@@ -354,7 +354,7 @@ int main(int argc, const char **argv)
 						}
 					}
 
-					image_fin[i*height + j] = to_RGB(v_sum * (1 / sum));
+					image_fin[i*height + j] = to_RGB(v_sum * (1.0 / sum));
 				}
 			}
 			image = image_fin;
