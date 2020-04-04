@@ -271,12 +271,12 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 1000;
-	uint32_t height = 1000;
+	uint32_t width = 512;
+	uint32_t height = 512;
 
 	if (sceneId == 0) {
-		width = 10024;
-		height = 10024;
+		width = 1024;
+		height = 1024;
 	}
 
 	std::cout << "Rendering.\n";
@@ -316,7 +316,7 @@ int main(int argc, const char **argv)
 				color = Vector3();
 
 				Object::intersect info = scene.trace_path(cam.position,
-						dir.normalize(), 3, 400);
+						dir.normalize(), 3, 100);
 				if (info.valid) {
 					color = info.color;
 				}
