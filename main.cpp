@@ -197,9 +197,9 @@ int main(int argc, const char **argv)
 				diff_blue));
 
 //		scene.add(new Sphere(Vertex3(60, -60, 260), 40, mirror));
-		scene.add(new Sphere(Vertex3(-140, -140, 400), 60, transparent));
+		scene.add(new Sphere(Vertex3(-140, -140, 360), 60, transparent));
 
-		scene.add(new Mesh("objects/Cube.obj", 0, 0, 480,
+		scene.add(new Mesh("objects/Cube.obj", 150, -150, 550,
 				M_PI / 4, M_PI / 4, M_PI / 4));
 
 		scene.add(Light(Vertex3(40, 155, 420), 15800));
