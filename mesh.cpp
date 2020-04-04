@@ -241,7 +241,7 @@ list<Mesh::tree_elem*> Mesh::tree_elem::check_ray(Vertex3 origin, Vector3 dir)
 
 	list<tree_elem*> lst;
 
-	if (tmin > 0 && tmin <= tmax) {
+	if (tmax >= 0 && tmin <= tmax) {
 		bool f = true;
 		for (int i = 0; i < 8; ++i) {
 			if (lv[i]) {

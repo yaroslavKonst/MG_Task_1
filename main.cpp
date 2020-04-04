@@ -216,10 +216,10 @@ int main(int argc, const char **argv)
 		scene.add(&right);
 		scene.add(&sp3);
 		scene.add(&sp4);
-		scene.add(Light(Vertex3(20, 95, 220), 2500));
-		scene.add(Light(Vertex3(20, 95, 200), 2500));
-		scene.add(Light(Vertex3(-20, 95, 220), 2500));
-		scene.add(Light(Vertex3(-20, 95, 200), 2500));
+		scene.add(Light(Vertex3(20, 95, 220), 2800));
+		scene.add(Light(Vertex3(20, 95, 200), 2800));
+		scene.add(Light(Vertex3(-20, 95, 220), 2800));
+		scene.add(Light(Vertex3(-20, 95, 200), 2800));
 
 		cam.position = Vertex3(0, 0, -80);
 		cam.phi = 0;
@@ -271,13 +271,12 @@ int main(int argc, const char **argv)
 		cam.fov = M_PI / 2;
 	}
 
-	uint32_t width = 1024;
-	uint32_t height = 1024;
+	uint32_t width = 1000;
+	uint32_t height = 1000;
 
 	if (sceneId == 0) {
-		width = 1024;
-		height = 1024;
-
+		width = 10024;
+		height = 10024;
 	}
 
 	std::cout << "Rendering.\n";
@@ -317,7 +316,7 @@ int main(int argc, const char **argv)
 				color = Vector3();
 
 				Object::intersect info = scene.trace_path(cam.position,
-						dir.normalize(), 3, 800);
+						dir.normalize(), 3, 400);
 				if (info.valid) {
 					color = info.color;
 				}
@@ -330,7 +329,7 @@ int main(int argc, const char **argv)
 				color = color * (1.0 / coeff);
 			}
 
-			#pragma omp critical
+//			#pragma omp critical
 			{
 				image[j*height + width - i - 1] = to_RGB(color);
 			}
