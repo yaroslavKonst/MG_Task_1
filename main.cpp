@@ -87,6 +87,9 @@ int main(int argc, const char **argv)
 
 	Material diff_black(Vector3(0.1, 0.1, 0.1), Vector3(), 0);
 
+	Material gold(Vector3(0.7, 0.7, 0), Vector3(0.5, 0.5, 0.5),
+			400, 1, 40);
+
 
 	std::cout << "Loading models.\n";
 
@@ -122,6 +125,15 @@ int main(int argc, const char **argv)
 				Vector3(-500, 500, 0),
 				Vector3(500, 500, 0),
 				Vector3(0, 0, 0)));
+
+		Vertex3 p1(-500, -50, 1200);
+		Vertex3 p2(0, -50, 1300);
+		Vertex3 p3(-400, 300, 1200);
+		Vector3 norm(((p2 - p1) * (p3 - p1)) * -1);
+		scene.add(new Triangle(
+				p1, p2, p3,
+				norm, norm, norm,
+				gold));
 
 		// Lights
 		scene.add(Light(Vertex3(-500, 100, 0), 500000));
@@ -269,35 +281,41 @@ int main(int argc, const char **argv)
 		scene.del();
 
 	// Filtering
+		int filt_num;
 		if (path_tr) {
-			for (int iter = 0; iter < 10; ++iter) {
-				std::vector<uint32_t> image_fin(width * height);
-				std::cout << "Filtering: " << iter << std::endl;
-				for (uint32_t i = 1; i < width - 1; ++i) {
-					for (uint32_t j = 1; j < height - 1; ++j) {
-						Vector3 center = from_RGB(image[i*height + j]);
-						Vector3 ng[4];
-						ng[0] = from_RGB(image[i*height + j + 1]);
-						ng[1] = from_RGB(image[i*height + j - 1]);
-						ng[2] = from_RGB(image[(i + 1)*height + j]);
-						ng[3] = from_RGB(image[(i - 1)*height + j]);
-
-						double sum = 1;
-						Vector3 v_sum = center;
-
-						for (int k = 0; k < 4; ++k) {
-							if ((ng[k] - center).length() < 0.05 || iter <= 3) {
-								sum += 1.0;
-								v_sum += ng[k];
-							}
-						}
-
-						image_fin[i*height + j] = to_RGB(v_sum * (1.0 / sum));
-					}
-				}
-				image = image_fin;
-			}
+			filt_num = 5;
+		} else {
+			filt_num = 1;
 		}
+
+		for (int iter = 0; iter < filt_num; ++iter) {
+			std::vector<uint32_t> image_fin(width * height);
+			std::cout << "Filtering: " << iter << std::endl;
+			for (uint32_t i = 1; i < width - 1; ++i) {
+				for (uint32_t j = 1; j < height - 1; ++j) {
+					Vector3 center = from_RGB(image[i*height + j]);
+					Vector3 ng[4];
+					ng[0] = from_RGB(image[i*height + j + 1]);
+					ng[1] = from_RGB(image[i*height + j - 1]);
+					ng[2] = from_RGB(image[(i + 1)*height + j]);
+					ng[3] = from_RGB(image[(i - 1)*height + j]);
+
+					double sum = 1;
+					Vector3 v_sum = center;
+
+					for (int k = 0; k < 4; ++k) {
+						if ((ng[k] - center).length() < 0.05 || iter <= 3) {
+							sum += 1.0;
+							v_sum += ng[k];
+						}
+					}
+
+					image_fin[i*height + j] = to_RGB(v_sum * (1.0 / sum));
+				}
+			}
+			image = image_fin;
+		}
+
 
 		std::cout << "Saving image to " << outFilePath << "." << std::endl;
 
