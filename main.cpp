@@ -100,13 +100,14 @@ int main(int argc, const char **argv)
 	if (sceneId == 1) {
 		// Objects
 		scene.add(new Sphere(Vertex3(0, -20, 300), 50, blue));
-		scene.add(new Sphere(Vertex3(0, 50, 400), 40, transparent));
-		scene.add(new Sphere(Vertex3(120, -20, 300), 50, blue));
-		scene.add(new Sphere(Vertex3(-80, -40, 350), 20, green1));
-		scene.add(new Mesh("objects/planeAssembly.obj", -100, 140, 400,
+		scene.add(new Sphere(Vertex3(100, 50, 400), 40, transparent));
+		scene.add(new Sphere(Vertex3(120, -30, 320), 30, blue));
+		scene.add(new Sphere(Vertex3(-120, -40, 350), 20, green1));
+		scene.add(new Mesh("../objects/planeAssembly.obj", -100, 140, 400,
 				M_PI, M_PI / 8, -M_PI / 10));
-		scene.add(new Sphere(Vertex3(100, 100, 700), 50, mirror));
-		scene.add(new Sphere(Vertex3(0, 50, 800), 30, red));
+		scene.add(new Sphere(Vertex3(40, 100, 700), 50, mirror));
+		scene.add(new Sphere(Vertex3(-240, -25, 600), 50, green));
+		scene.add(new Sphere(Vertex3(-150, 50, 800), 30, red));
 		scene.add(new Sphere(Vertex3(150, 200, 600), 50, green));
 
 		scene.add(new Endless_plane(
@@ -196,10 +197,10 @@ int main(int argc, const char **argv)
 				Vector3(0, 0, -1),
 				diff_blue));
 
-//		scene.add(new Sphere(Vertex3(60, -60, 260), 40, mirror));
+		scene.add(new Sphere(Vertex3(140, 140, 540), 60, mirror));
 		scene.add(new Sphere(Vertex3(-140, -140, 360), 60, transparent));
 
-		scene.add(new Mesh("objects/Cube.obj", 150, -150, 550,
+		scene.add(new Mesh("../objects/Cube.obj", 150, -150, 550,
 				M_PI / 4, M_PI / 4, M_PI / 4));
 
 		scene.add(Light(Vertex3(40, 155, 420), 15800));
@@ -226,12 +227,6 @@ int main(int argc, const char **argv)
 
 		#pragma omp parallel for shared(scene, image, width, height) schedule(dynamic)
 		for (uint32_t i = 0; i < width; ++i) {
-			#pragma omp critical
-			{
-				if (i % 10 == 0) {
-					std::cout << i << std::endl;
-				}
-			}
 			for (uint32_t j = 0; j < height; ++j) {
 				Vector3 dir = cam.getDir(i, j, width, height);
 
