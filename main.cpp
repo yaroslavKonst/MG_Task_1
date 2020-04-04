@@ -63,7 +63,7 @@ int main(int argc, const char **argv)
 			300, 1, 40);
 
 	Material green1(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
-			500, 1, 40);
+			700, 1, 40);
 
 	Material mirror(Vector3(0.7, 0.7, 0.7), Vector3(0.2, 0.2, 0.2),
 			800, 1, 40);
@@ -76,6 +76,16 @@ int main(int argc, const char **argv)
 
 	Material transparent(Vector3(0, 0.9, 0), Vector3(0.1, 0.1, 0.1),
 			300, 0, 40, 1.5);
+
+	Material diff_green(Vector3(0, 0.7, 0), Vector3(), 0);
+
+	Material diff_red(Vector3(0.7, 0, 0), Vector3(), 0);
+
+	Material diff_blue(Vector3(0, 0, 0.7), Vector3(), 0);
+
+	Material diff_white(Vector3(0.7, 0.7, 0.7), Vector3(), 0);
+
+	Material diff_black(Vector3(0.1, 0.1, 0.1), Vector3(), 0);
 
 
 	std::cout << "Loading models.\n";
@@ -106,7 +116,7 @@ int main(int argc, const char **argv)
 				Vector3(0, 1, 0),
 				Vector3(0, 1, 0),
 				Vector3(0, 1, 0),
-				Material(Vector3(0, 0, 0.5), Vector3(), 100),
+				Material(Vector3(), Vector3(), 100),
 				new TexChBoard,
 				Vector3(-500, 500, 0),
 				Vector3(500, 500, 0),
@@ -132,67 +142,70 @@ int main(int argc, const char **argv)
 
 	} else if (sceneId == 2) {
 
-		scene.add(new Endless_plane(
+		scene.add(new Endless_plane( // back
 				Vertex3(0, 0, -90),
 				Vertex3(-100, 100, -90),
 				Vertex3(100, 100, -90),
 				Vector3(0, 0, 1),
 				Vector3(0, 0, 1),
 				Vector3(0, 0, 1),
-				Material(Vector3(0.1, 0.1, 0.1), Vector3(), 0)));
+				diff_black));
 
-		scene.add(new Endless_plane(
-				Vertex3(0, -100, 0),
-				Vertex3(-100, -100, 100),
-				Vertex3(100, -100, 100),
+		scene.add(new Endless_plane( // down
+				Vertex3(0, -200, 0),
+				Vertex3(-100, -200, 100),
+				Vertex3(100, -200, 100),
 				Vector3(0, 1, 0),
 				Vector3(0, 1, 0),
 				Vector3(0, 1, 0),
-				Material(Vector3(0.7, 0.7, 0.7), Vector3(), 0)));
+				diff_white));
 
-		scene.add(new Endless_plane(
-				Vertex3(100, 0, 0),
-				Vertex3(100, 100, 100),
-				Vertex3(100, 100, -100),
+		scene.add(new Endless_plane( // left
+				Vertex3(200, 0, 0),
+				Vertex3(200, 100, 100),
+				Vertex3(200, 100, -100),
 				Vector3(-1, 0, 0),
 				Vector3(-1, 0, 0),
 				Vector3(-1, 0, 0),
-				Material(Vector3(0, 0.7, 0), Vector3(), 0)));
+				diff_green));
 
-		scene.add(new Endless_plane(
-				Vertex3(-100, 0, 0),
-				Vertex3(-100, 100, 100),
-				Vertex3(-100, 100, -100),
+		scene.add(new Endless_plane( // right
+				Vertex3(-200, 0, 0),
+				Vertex3(-200, 100, 100),
+				Vertex3(-200, 100, -100),
 				Vector3(1, 0, 0),
 				Vector3(1, 0, 0),
 				Vector3(1, 0, 0),
-				Material(Vector3(0.7, 0, 0), Vector3(), 0)));
+				diff_red));
 
-		scene.add(new Endless_plane(
-				Vertex3(0, 100, 0),
-				Vertex3(-100, 100, 100),
-				Vertex3(100, 100, 100),
+		scene.add(new Endless_plane( // up
+				Vertex3(0, 200, 0),
+				Vertex3(-100, 200, 100),
+				Vertex3(100, 200, 100),
 				Vector3(0, -1, 0),
 				Vector3(0, -1, 0),
 				Vector3(0, -1, 0),
-				Material(Vector3(0.7, 0.7, 0.7), Vector3(), 0)));
+				diff_white));
 
-		scene.add(new Endless_plane(
-				Vertex3(0, 0, 300),
-				Vertex3(-100, 100, 300),
-				Vertex3(100, 100, 300),
+		scene.add(new Endless_plane( // front
+				Vertex3(0, 0, 600),
+				Vertex3(-100, 100, 600),
+				Vertex3(100, 100, 600),
 				Vector3(0, 0, -1),
 				Vector3(0, 0, -1),
 				Vector3(0, 0, -1),
-				Material(Vector3(0, 0, 0.7), Vector3(), 0)));
+				diff_blue));
 
-		scene.add(new Sphere(Vertex3(60, -60, 260), 40, mirror));
-		scene.add(new Sphere(Vertex3(-60, -60, 160), 40, transparent));
+//		scene.add(new Sphere(Vertex3(60, -60, 260), 40, mirror));
+		scene.add(new Sphere(Vertex3(-140, -140, 400), 60, transparent));
 
-		scene.add(Light(Vertex3(20, 95, 220), 2800));
-		scene.add(Light(Vertex3(20, 95, 200), 2800));
-		scene.add(Light(Vertex3(-20, 95, 220), 2800));
-		scene.add(Light(Vertex3(-20, 95, 200), 2800));
+		scene.add(new Mesh("objects/Cube.obj", 0, 0, 480,
+				M_PI / 4, M_PI / 4, M_PI / 4));
+
+		scene.add(Light(Vertex3(40, 155, 420), 15800));
+		scene.add(Light(Vertex3(40, 155, 400), 15800));
+		scene.add(Light(Vertex3(-40, 155, 420), 15800));
+		scene.add(Light(Vertex3(-40, 155, 400), 15800));
 
 		cam.position = Vertex3(0, 0, -80);
 		cam.phi = 0;
@@ -213,6 +226,12 @@ int main(int argc, const char **argv)
 
 		#pragma omp parallel for shared(scene, image, width, height) schedule(dynamic)
 		for (uint32_t i = 0; i < width; ++i) {
+			#pragma omp critical
+			{
+				if (i % 10 == 0) {
+					std::cout << i << std::endl;
+				}
+			}
 			for (uint32_t j = 0; j < height; ++j) {
 				Vector3 dir = cam.getDir(i, j, width, height);
 

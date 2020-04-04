@@ -1,7 +1,7 @@
 #include "mesh.h"
 
 Mesh::Mesh(std::string file, double x, double y, double z, double phi,
-		double psi, double theta)
+		double psi, double theta, Material m)
 {
 	X = x;
 	Y = y;
@@ -9,6 +9,7 @@ Mesh::Mesh(std::string file, double x, double y, double z, double phi,
 	Phi = phi;
 	Psi = psi;
 	Theta = theta;
+	mat = m;
 
 	if (file == "") {
 		return;
@@ -101,7 +102,7 @@ Mesh::Mesh(std::string file, double x, double y, double z, double phi,
 	tree_root->build(polygons, 10);
 }
 
-Mesh::Mesh(const Mesh &mesh)
+Mesh::Mesh(const Mesh &mesh): Object(mesh)
 {
 	X = mesh.X;
 	Y = mesh.Y;
@@ -407,8 +408,8 @@ Object::intersect Mesh::intersect_ray(Scene &scene, Vertex3 origin,
 
 		if (!shadow) {
 			stat.color = calculate_light(gl_pos, gl_norm, dir, scene,
-					Material(pol_res.Kd, pol_res.Ks, pol_res.Ns, pol_res.d),
-					depth, path);
+					Material(pol_res.Kd, pol_res.Ks, pol_res.Ns, pol_res.d,
+					mat.alpha, mat.N), depth, path);
 		}
 		stat.t = Gt;
 	}

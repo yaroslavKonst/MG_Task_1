@@ -88,22 +88,22 @@ Vector3 Object::calculate_light(Vertex3 pos, Vector3 normal, Vector3 dir,
 			n2 = 1;
 			refr_dir = Snell_refr(dir.normalize(), normal * -1, n1, n2, refr_s);
 			if (refr_s) {
-				start = pos + normal * 0.001;
-				start_refl = pos + normal * -0.001;
+				start = pos + normal * 0.1;
+				start_refl = pos + normal * -0.1;
 				refl_coeff = Fresnel_coeff(n1, n2, (dir).dot(normal));
 			} else {
-				start = pos + normal * -0.001;
+				start = pos + normal * -0.1;
 			}
 		} else {
 			n1 = 1;
 			n2 = mat.N;
 			refr_dir = Snell_refr(dir.normalize(), normal, n1, n2, refr_s);
 			if (refr_s) {
-				start = pos + normal * -0.001;
-				start_refl = pos + normal * 0.001;
+				start = pos + normal * -0.1;
+				start_refl = pos + normal * 0.1;
 				refl_coeff = Fresnel_coeff(n1, n2, (dir*-1).dot(normal));
 			} else {
-				start = pos + normal * 0.001;
+				start = pos + normal * 0.1;
 			}
 		}
 		intersect info;

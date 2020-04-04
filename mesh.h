@@ -13,7 +13,8 @@
 class Mesh: public Object {
 public:
 	Mesh(std::string file = std::string(""), double x = 0, double y = 0,
-			double z = 0, double phi = 0, double psi = 0, double theta = 0);
+			double z = 0, double phi = 0, double psi = 0, double theta = 0,
+			Material m = Material());
 	Mesh(const Mesh& mesh);
 	~Mesh();
 
