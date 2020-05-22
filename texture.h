@@ -35,10 +35,4 @@ public:
 	}
 };
 
-class BMPTexture: public Texture {
-public:
-	
-
-};
-
 #endif
